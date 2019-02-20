@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +15,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace HotelBooking
-namespace DesktopApp
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -46,13 +44,5 @@ namespace DesktopApp
         public int RoomNumber { get; set; }
         public string Description { get; set; }
         public DateTime TimeAdded { get; set; }
-    }
-}
-    public partial class MainWindow : Window
-    {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
     }
 }
