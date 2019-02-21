@@ -11,7 +11,9 @@ namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        bool loggedIn = true;
+        bool loggedIn = false;
+
+
 
         public ActionResult Index()
         {
@@ -40,8 +42,8 @@ namespace WebApp.Controllers
             else
             {
                 ViewBag.Message = "Wrong name or password";
-                Login();
-                return null; 
+                return Login();
+                
             }
         }
     }
