@@ -51,8 +51,9 @@ namespace DesktopApp
                 checkOutdate = DateTime.Parse(CheckOutDateBox.Text);
                 Booking booking = new Booking//(2, username, numberOfBeds, checkInDate, checkOutdate)
                 {
-                    BookingId = 2,
+
                     CustomerUsername = username,
+                    RoomId = numberOfBeds,
                     CheckInDate = checkInDate,
                     CheckOutDate = checkOutdate
                 };
