@@ -22,5 +22,16 @@ namespace DesktopApp
     
         public virtual Customer Customer { get; set; }
         public virtual Room Room { get; set; }
+
+        public Booking() { }
+
+        public Booking(int BookingId, string CustomerUsername, int RoomId, DateTime CheckInDate, DateTime CheckOutDate)
+        {
+            this.BookingId = BookingId;
+            this.CustomerUsername = CustomerUsername;
+            this.RoomId = RoomId;
+            this.CheckInDate = CheckInDate;
+            this.CheckOutDate = CheckOutDate;
+        }
     }
 }
