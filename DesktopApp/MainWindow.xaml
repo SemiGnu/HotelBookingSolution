@@ -14,7 +14,31 @@
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
             <TabItem Header="Reservations">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="138*"/>
+                        <ColumnDefinition Width="51*"/>
+                        <ColumnDefinition Width="15*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="574*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ListView Name="reservationList" ItemsSource="{Binding}" Margin="5,45,-4,2.2" Grid.ColumnSpan="5">
+                        <ListView.View>
+                            <GridView>
+                                <GridView.Columns>
+                                    <GridViewColumn Width="75" Header="Room#" DisplayMemberBinding="{Binding Path=RoomId}" />
+                                    <GridViewColumn Width="100" Header="Customer" DisplayMemberBinding="{Binding Path=CustomerUsername}" />
+                                    <GridViewColumn Width="100" Header="Check-in Date" DisplayMemberBinding="{Binding Path=CheckInDate}" />
+                                    <GridViewColumn Width="100" Header="Check-out Date" DisplayMemberBinding="{Binding Path=CheckOutDate}" />
+
+                                </GridView.Columns>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Button Content="Check-in" HorizontalAlignment="Left" Margin="37,10,0,0" VerticalAlignment="Top" Width="75" Click="CheckInButton_Click"/>
+                    <Button Content="Check-out" HorizontalAlignment="Left" Margin="16.4,10,0,0" VerticalAlignment="Top" Width="75" Grid.ColumnSpan="4" Grid.Column="1"/>
+                </Grid>
             </TabItem>
             <TabItem Header="Tasks">
                 <Grid Background="#FFE5E5E5">
