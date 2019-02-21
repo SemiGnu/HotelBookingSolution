@@ -23,7 +23,7 @@
                         <ColumnDefinition Width="574*"/>
                     </Grid.ColumnDefinitions>
 
-                    <ListView Name="reservationList" ItemsSource="{Binding}" Margin="5,45,-4,2.2" Grid.ColumnSpan="5">
+                    <ListView Name="reservationList" ItemsSource="{Binding}" Margin="5,45,-4,2.2" Grid.ColumnSpan="5" MouseDoubleClick="ReservationList_MouseDoubleClick">
                         <ListView.View>
                             <GridView>
                                 <GridView.Columns>
@@ -37,7 +37,7 @@
                         </ListView.View>
                     </ListView>
                     <Button Content="Check-in" HorizontalAlignment="Left" Margin="37,10,0,0" VerticalAlignment="Top" Width="75" Click="CheckInButton_Click"/>
-                    <Button Content="Check-out" HorizontalAlignment="Left" Margin="16.4,10,0,0" VerticalAlignment="Top" Width="75" Grid.ColumnSpan="4" Grid.Column="1"/>
+                    <Button Content="Check-out" HorizontalAlignment="Left" Margin="16.4,10,0,0" VerticalAlignment="Top" Width="75" Grid.ColumnSpan="4" Grid.Column="1" Click="Button_Click"/>
                 </Grid>
             </TabItem>
             <!--
