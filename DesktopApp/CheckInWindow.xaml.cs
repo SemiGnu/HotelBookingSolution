@@ -36,7 +36,7 @@ namespace DesktopApp
 
         private void AddBooking_Click(object sender, RoutedEventArgs e)
         {
-            string username;
+            string userFullName;
             int numberOfBeds;
             DateTime checkInDate;
             DateTime checkOutdate;
@@ -44,23 +44,24 @@ namespace DesktopApp
             try
             {
                 numberOfBeds = int.Parse(NumberOfBedsTextBox.Text);
-                username = CustomerNameTextBox.Text;
-                Customer c = dac.Customer.Where(cu => cu.Username == username).FirstOrDefault<Customer>();
+                userFullName = CustomerNameTextBox.Text;
+                Customer c = dac.Customer.Where(cu => cu.Name == userFullName).FirstOrDefault<Customer>();
                 checkInDate = DateTime.Parse(CheckInDateBox.Text);
+                Room room = dac.Room.Where(ro => ro.NumberOfBeds == numberOfBeds).FirstOrDefault<Room>();
                     
                 checkOutdate = DateTime.Parse(CheckOutDateBox.Text);
                 Booking booking = new Booking//(2, username, numberOfBeds, checkInDate, checkOutdate)
                 {
 
-                    CustomerUsername = username,
-                    RoomId = numberOfBeds,
+                    CustomerUsername = c.Username,
+                    RoomId = room.RoomId,
                     CheckInDate = checkInDate,
                     CheckOutDate = checkOutdate
                 };
 
                 dac.Booking.Add(booking);
                 dac.SaveChanges();
-
+                this.Close();
 
             } catch (FormatException ex) 
             {
