@@ -78,6 +78,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DesktopAppModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ErrorWindow.xaml.cs">
+      <DependentUpon>ErrorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Room.cs">
       <DependentUpon>DesktopAppModel.tt</DependentUpon>
     </Compile>
@@ -85,6 +88,10 @@
       <DependentUpon>DesktopAppModel.tt</DependentUpon>
     </Compile>
     <Page Include="CheckInWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ErrorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
