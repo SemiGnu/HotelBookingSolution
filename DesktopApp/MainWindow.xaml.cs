@@ -3,11 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -51,6 +55,12 @@ namespace HotelBooking
             //filling the list in reservations with data from booking
             reservationList.DataContext = booking.Local;
 
+            //filling the list in reservations with data from booking -t
+            TaskListView.DataContext = task.Local;
+
+
+
+
             //DataContext = this;
             //TaskDummyList = new ObservableCollection<TaskDummy> {
             //    new TaskDummy {Type = "Room Service", RoomNumber = 101, Description = "More pizza!", TimeAdded = new DateTime(2019,1,20,14,13,0) },
@@ -64,6 +74,67 @@ namespace HotelBooking
         private void CheckInButton_Click(object sender, RoutedEventArgs e)
         {
             new CheckInWindow(dac).ShowDialog();
+        }
+
+        private void OrderRoomServiceButton_Click(object sender, RoutedEventArgs e)
+        {
+            int room = 0;
+            Int32.TryParse(TaskEntryRoomNumber.Text, out room);
+            Task t = new Task
+            {
+                TaskId = 2,
+                RoomId = room,
+                TimeIssued = DateTime.Now,
+                TypeOfService = "Room Service",
+                Status = "Pending",
+                Description = TaskEntryDescription.Text,
+                TimeCompleted = null                
+            };
+
+            dac.Task.Add(t);
+            try
+            {
+                dac.SaveChanges();
+            }
+            catch (Exception er)
+            {
+                new ErrorWindow(er).ShowDialog();
+                throw;
+            }
+        }
+
+        private void OrderMaintainanceButton_Click(object sender, RoutedEventArgs e)
+        {
+            int room = 0;
+            Int32.TryParse(TaskEntryRoomNumber.Text, out room);
+            Task t = new Task
+            {
+                TaskId = -1,
+                RoomId = room,
+                TimeIssued = DateTime.Now,
+                TypeOfService = "Maintainance",
+                Status = "Pending",
+                Description = TaskEntryDescription.Text,
+                TimeCompleted = null
+            };
+
+            dac.Task.Add(t);
+            try
+            {
+                dac.SaveChanges();
+            }
+            catch (Exception er)
+            {
+                new ErrorWindow(er).ShowDialog();
+                throw;
+            }
+        }
+
+        // tallvalidator, stjålet fra Kishor på stack overflow -t
+        private void TaskEntryRoomNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 

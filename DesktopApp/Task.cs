@@ -20,6 +20,7 @@ namespace DesktopApp
         public System.DateTime TimeIssued { get; set; }
         public Nullable<System.DateTime> TimeCompleted { get; set; }
         public int RoomId { get; set; }
+        public string Description { get; set; }
     
         public virtual Room Room { get; set; }
     }
