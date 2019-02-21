@@ -9,7 +9,7 @@
           <Key>
             <PropertyRef Name="BookingId" />
           </Key>
-          <Property Name="BookingId" Type="int" Nullable="false" />
+          <Property Name="BookingId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CustomerUsername" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="RoomId" Type="int" Nullable="false" />
           <Property Name="CheckInDate" Type="datetime" Nullable="false" />
@@ -106,7 +106,7 @@
           <Key>
             <PropertyRef Name="BookingId" />
           </Key>
-          <Property Name="BookingId" Type="Int32" Nullable="false" />
+          <Property Name="BookingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CustomerUsername" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="RoomId" Type="Int32" Nullable="false" />
           <Property Name="CheckInDate" Type="DateTime" Nullable="false" Precision="3" />
