@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "New booking";
+}
+<h2>@ViewBag.Title.</h2>
+
+
+<p>Room size: <input type="text"></p>
+<label for="start">Start date:</label>
+
+<input type="date" id="start" name="trip-start"
+       value="2019-02-22"
+       min="2019-02-22" max="2020-12-30">
+
+<label for="end">End date date:</label>
+
+<input type="date" id="end" name="trip-start"
+       value="2019-02-23"
+       min="start+1" max="2020-12-31">
+
+<p>Room size: <input type="text"></p>
+<p><input type="submit" value="Search" /></p>
