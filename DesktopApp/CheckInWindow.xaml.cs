@@ -38,7 +38,7 @@ namespace DesktopApp
 
         private void AddBooking_Click(object sender, RoutedEventArgs e)
         {
-            //string username = "";
+            string username = "";
             int numberOfBeds = 0;
 
 
@@ -51,16 +51,10 @@ namespace DesktopApp
                 MessageBox.Show("Number of Beds must be a number");
             }
 
-            //try
-            //{
-            //    username = (string)customer.Username.Local.Where(cn => cn.Name.Equals(CustomerName.Text));
-            //}catch(Exception exc)
-            //{
-            //    Console.Write(exc);
-            //}
+          
 
-            //if(CustomerName.Text.Length > 0 || )
-            
+         
+
 
         }
     }
