@@ -28,13 +28,13 @@ namespace HotelBooking
 
         public MainWindow()
         {
-            DataContext = this;
+            InitializeComponent();
             TaskDummyList = new ObservableCollection<TaskDummy> {
                 new TaskDummy {Type = "Room Service", RoomNumber = 101, Description = "More pizza!", TimeAdded = new DateTime(2019,1,20,14,13,0) },
                 new TaskDummy {Type = "Room Service", RoomNumber = 102, Description = "More beer!", TimeAdded = new DateTime(2019,1,20,14,12,0) },
                 new TaskDummy {Type = "Maintainance", RoomNumber = 101, Description = "Muh fan not werking", TimeAdded = new DateTime(2019,1,20,12,13,0) }
             };
-            InitializeComponent();
+            TaskDummyListView.DataContext = TaskDummyList;
         }
     }
 
