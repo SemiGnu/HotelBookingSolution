@@ -5,13 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DesktopApp"
         mc:Ignorable="d"
-        Title="CheckInWindow" Height="150" Width="700">
-    <Grid Background="#FFE5E5E5">
-        <Button Name="AddBooking" Content="Add booking" HorizontalAlignment="Left" Margin="542,44,0,0" VerticalAlignment="Top" Width="75" Click="AddBooking_Click"/>
-        <TextBox Name="CustomerName" HorizontalAlignment="Left" Height="23" Margin="62,42,0,0" TextWrapping="Wrap" Text="Customer name" VerticalAlignment="Top" Width="120"/>
-        <TextBox Name="NumberOfBeds" HorizontalAlignment="Left" Height="23" Margin="187,42,0,0" TextWrapping="Wrap" Text="# of beds" VerticalAlignment="Top" Width="120"/>
-        <DatePicker Name="CheckInDate" HorizontalAlignment="Left" Margin="312,42,0,0" VerticalAlignment="Top"/>
-        <DatePicker Name="CheckOutDate" HorizontalAlignment="Left" Margin="419,42,0,0" VerticalAlignment="Top"/>
+        Title="CheckInWindow" Height="327" Width="800">
+    <Grid Background="#FFE5E5E5" Height="298" VerticalAlignment="Top" Margin="-2,0,2,-2">
+
+
+        <TextBox Name="CustomerNameTextBox" HorizontalAlignment="Left" Height="23" Margin="114,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="NumberOfBedsTextBox" HorizontalAlignment="Left" Height="23" Margin="114,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <DatePicker Name="CheckInDateBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,160,0,0"/>
+        <DatePicker Name="CheckOutDateBox" HorizontalAlignment="Left" Margin="114,109,0,0" VerticalAlignment="Top" SelectedDateFormat="Short"/>
+        <Button Name="AddBokking"  Content="Add" Margin="349,192,0,0" Width="75" Click="AddBooking_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20"/>
+        <TextBlock  HorizontalAlignment="Left" Margin="21,15,0,0" TextWrapping="Wrap" Text="Customer name:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="21,57,0,0" TextWrapping="Wrap" Text="Number of beds:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="21,113,0,0" TextWrapping="Wrap" Text="Check in date: " VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="21,164,0,0" TextWrapping="Wrap" Text="Check out date:" VerticalAlignment="Top"/>
+        <Button Name="CancelButton" Content="Cancel" HorizontalAlignment="Left" Margin="459,192,0,0" VerticalAlignment="Top" Width="75" Click="CancelCheckIn_Click"/>
+
 
     </Grid>
 </Window>

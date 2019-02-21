@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.Entity;
 
-
 namespace DesktopApp
 {
     /// <summary>
@@ -30,31 +29,54 @@ namespace DesktopApp
         public CheckInWindow(DesktopAppConfig dac)
         {
             InitializeComponent();
-
             this.dac = dac;
 
-
         }
+        
 
         private void AddBooking_Click(object sender, RoutedEventArgs e)
         {
-            string username = "";
-            int numberOfBeds = 0;
-
-
+            string username;
+            int numberOfBeds;
+            DateTime checkInDate;
+            DateTime checkOutdate;
+            
+            
             try
             {
-                numberOfBeds = int.Parse(NumberOfBeds.Text);
-            }catch(FormatException exc)
+                numberOfBeds = int.Parse(NumberOfBedsTextBox.Text);
+                username = CustomerNameTextBox.Text;
+                Customer c = dac.Customer.Where(cu => cu.Username == username).FirstOrDefault<Customer>();
+                checkInDate = DateTime.Parse(CheckInDateBox.Text);
+                    
+                checkOutdate = DateTime.Parse(CheckOutDateBox.Text);
+                Booking booking = new Booking(username, numberOfBeds, checkInDate, checkOutdate);
+
+                // try
+                //{
+                // dac.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Booking ON");
+                dac.Booking.Add(booking);
+
+                dac.SaveChanges();
+                   // dac.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Booking OFF");
+                //}
+                //finally
+                //{
+                //}
+
+
+            } catch (FormatException ex) 
             {
-                Console.Write(exc);
-                MessageBox.Show("Number of Beds must be a number");
+                Console.WriteLine(ex);
+                MessageBox.Show("Check your input");
+
             }
+           
+        }
 
-          
-
-         
-
+        private void CancelCheckIn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
 
         }
     }
