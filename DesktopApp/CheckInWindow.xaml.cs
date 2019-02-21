@@ -50,10 +50,19 @@ namespace DesktopApp
                 checkInDate = DateTime.Parse(CheckInDateBox.Text);
                     
                 checkOutdate = DateTime.Parse(CheckOutDateBox.Text);
-                Booking booking = new Booking(2, username, numberOfBeds, checkInDate, checkOutdate);
+                Booking booking = new Booking(username, numberOfBeds, checkInDate, checkOutdate);
 
+                // try
+                //{
+                // dac.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Booking ON");
                 dac.Booking.Add(booking);
+
                 dac.SaveChanges();
+                   // dac.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Booking OFF");
+                //}
+                //finally
+                //{
+                //}
 
 
             } catch (FormatException ex) 
