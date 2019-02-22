@@ -36,12 +36,14 @@ namespace DesktopApp
         private void CheckOutCustomer_Click(object sender, RoutedEventArgs e)
         {
             string userFullName;
+            int roomNr;
 
             try
             {
                 userFullName = CustomerNameTextBox.Text;
+                roomNr = int.Parse(RoomNumberTextBox.Text);
                 Customer c = dac.Customer.Where(cu => cu.Name == userFullName).FirstOrDefault<Customer>();
-                Booking b = dac.Booking.Where(bo => bo.Customer == c).FirstOrDefault<Booking>();
+                Booking b = dac.Booking.Where(bo => bo.Customer.Username == c.Username).FirstOrDefault<Booking>();
 
                 dac.Booking.Remove(b);
                 dac.SaveChanges();
