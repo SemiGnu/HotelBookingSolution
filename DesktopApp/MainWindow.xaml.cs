@@ -85,7 +85,7 @@ namespace HotelBooking
                     TimeIssued = DateTime.Now,
                     TypeOfService = "Room Service",
                     Status = "Pending",
-                    Description = TaskEntryDescription.Text.Substring(0,100),// sjekker at strengen ikke er for lang
+                    Description = TaskEntryDescription.Text.Trim(),// sjekker at strengen ikke er for lang
                     TimeCompleted = null
                 };
 
@@ -106,7 +106,7 @@ namespace HotelBooking
             {
                 MessageBox.Show("Room number does not exist!", "Room entry error", MessageBoxButton.OK);
             }
-            
+
         }
         // se OrderRoomServiceButton_Click -t 
         private void OrderMaintainanceButton_Click(object sender, RoutedEventArgs e)
@@ -158,7 +158,7 @@ namespace HotelBooking
         // sjekker at beskrivelsen ikke er for lang -t
         private void TaskEntryDescription_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = (TaskEntryDescription.Text.Length > 100) ;
+            e.Handled = (TaskEntryDescription.Text.Length > 100);
         }
 
         private void ReservationList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -176,8 +176,9 @@ namespace HotelBooking
         private void TaskListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var selectedItem = TaskListView.SelectedItem as Task;
-            MessageBoxResult messageBoxResult = MessageBox.Show(String.Format("Are you sure you want to delete this task?\n Room Number: {0}\nType: {1}\nDescription: {2}", selectedItem.Room.RoomNumber,selectedItem.TypeOfService,selectedItem.Description), "Delete Confirmation", MessageBoxButton.YesNo);
-            if (messageBoxResult == MessageBoxResult.Yes) { 
+            MessageBoxResult messageBoxResult = MessageBox.Show(String.Format("Are you sure you want to delete this task?\n Room Number: {0}\nType: {1}\nDescription: {2}", selectedItem.Room.RoomNumber, selectedItem.TypeOfService, selectedItem.Description), "Delete Confirmation", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
                 task.Remove(selectedItem);
                 dac.SaveChanges();
                 ICollectionView view = CollectionViewSource.GetDefaultView(TaskListView.ItemsSource);
@@ -186,5 +187,6 @@ namespace HotelBooking
         }
 
     }
+}
 
   
