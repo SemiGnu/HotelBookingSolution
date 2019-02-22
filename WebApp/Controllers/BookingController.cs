@@ -15,28 +15,27 @@ namespace WebApp.Controllers
     //    DbSet<Booking> booking;
     //    DbSet<Customer> customer;
 
-    //    room = dac.Room;
-    //    booking = dac.Booking;
-    //    customer = dac.Customer;
+
+        public bool addUser()
+        {
+            Customer customer;
+            string username = Request.Form[usernameLogin];
+            //dac.Customer = this.customer; 
+            return true;
+        }
+
+        public bool CheckUserNameExists(string username)
+        {
+            room = dac.Room;
+            booking = dac.Booking;
+            customer = dac.Customer;
 
     //    room.Load();
     //    booking.Load();
     //    customer.Load();
 
-        
 
-    //    public bool CheckUserNameExists(string username)
-    //    {
-    //        var isDuplicate = dac.Customer.Any(r => r.Username == dac.);
-
-    //        if (isDuplicate)
-    //        {
-    //            // Inform user that the lot_number already exists
-    //            return true;
-    //        }
-
-    //        Console.WriteLine("does not exist. yay");
-
-    //    }
+            return true; 
+        }
     }
 }
