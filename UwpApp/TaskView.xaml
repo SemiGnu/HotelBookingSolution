@@ -8,18 +8,20 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid HorizontalAlignment="Left" Width="1272" Margin="80,76,0,0">
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0*"/>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="0*"/>
-            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="40*"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="10*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="453*"/>
-            <RowDefinition Height="437*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="80*"/>
         </Grid.RowDefinitions>
-        <ListView x:Name="MyListView" Margin="23,-18,-47,18" Grid.RowSpan="2" Grid.ColumnSpan="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <ListView x:Name="MyListView" Margin="10,10,10,10" Grid.Row="2" Grid.Column="1" Grid.RowSpan="2">
             <ListView.HeaderTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -40,13 +42,12 @@
             </ListView.ItemTemplate>
 
         </ListView>
-        <Button Content="Add Task" HorizontalAlignment="Left" VerticalAlignment="Top" Height="78" Width="292" Margin="888,58,0,0" RenderTransformOrigin="0.5,0.5" Grid.Column="1">
-            <Button.RenderTransform>
-                <CompositeTransform ScaleX="1"/>
-            </Button.RenderTransform>
-        </Button>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="90,42,0,0" VerticalAlignment="Top" Width="100" Grid.Column="2" Height="32" Grid.ColumnSpan="2" Click="Add_Task"/>
-        <TextBlock x:Name="typeOfService" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="1,-58,0,0" Text="none" VerticalAlignment="Top" Width="239"/>
+        <Button Content="Add Task" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Margin="10,10,10,10" Grid.Row="2" Grid.Column="2" />
+
+
+        <!--<Button Content="Button" HorizontalAlignment="Left" Margin="90,42,0,0" VerticalAlignment="Top" Width="100" Grid.Column="4" Height="32" Click="Add_Task"/>-->
+        <TextBlock x:Name="typeOfService" Text="Service type goes here" HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="1"/>
+        <Button Content="Service Selection" Click="ReturnToSelection" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,10" Grid.Row="1" Grid.Column="2" />
 
 
     </Grid>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DatabaseModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,14 +20,14 @@ namespace DesktopApp
     /// </summary>
     public partial class CheckOutWindow : Window
     {
-        DesktopAppConfig dac;
+        dat154_19_2Entities dac;
 
         public CheckOutWindow()
         {
             InitializeComponent();
         }
 
-        public CheckOutWindow(DesktopAppConfig dac)
+        public CheckOutWindow(dat154_19_2Entities dac)
         {
             this.dac = dac;
             InitializeComponent();

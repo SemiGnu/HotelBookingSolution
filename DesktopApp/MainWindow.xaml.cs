@@ -20,7 +20,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Task = DesktopApp.Task;
+using DatabaseModel;
+
 
 namespace HotelBooking
 {
@@ -32,11 +33,11 @@ namespace HotelBooking
     /// 
     public partial class MainWindow : Window
     {
-        DesktopAppConfig dac = new DesktopAppConfig();
+        dat154_19_2Entities dac = new dat154_19_2Entities();
         DbSet<Room> room;
         DbSet<Booking> booking;
         DbSet<Customer> customer;
-        DbSet<Task> task;
+        DbSet<ServiceTask> ServiceTask;
         public MainWindow()
         {
             InitializeComponent();
@@ -44,19 +45,19 @@ namespace HotelBooking
             room = dac.Room;
             booking = dac.Booking;
             customer = dac.Customer;
-            task = dac.Task;
+            ServiceTask = dac.ServiceTask;
 
             //loading the data from the database
             room.Load();
             booking.Load();
             customer.Load();
-            task.Load();
+            ServiceTask.Load();
 
             //filling the list in reservations with data from booking
             reservationList.DataContext = booking.Local;
 
-            //filling the list in reservations with data from booking, only "Pending" tasks -t
-            TaskListView.DataContext = task.Local.Where<Task>(task => task.Status == "Pending");
+            //filling the list in reservations with data from booking, only "Pending" ServiceTasks -t
+            ServiceTaskListView.DataContext = ServiceTask.Local.Where<ServiceTask>(ServiceTask => ServiceTask.Status == "Pending");
 
 
         }
@@ -67,11 +68,11 @@ namespace HotelBooking
             new CheckInWindow(dac).ShowDialog();
         }
 
-        // Legger til en room service task, henter roomid fra room number input -t
+        // Legger til en room service ServiceTask, henter roomid fra room number input -t
         private void OrderRoomServiceButton_Click(object sender, RoutedEventArgs e)
         {
             int roomInput = 0;
-            Int32.TryParse(TaskEntryRoomNumber.Text, out roomInput);
+            Int32.TryParse(ServiceTaskEntryRoomNumber.Text, out roomInput);
             try
             {
                 int roomId = (
@@ -79,17 +80,17 @@ namespace HotelBooking
                         where r.RoomNumber == roomInput
                         select r
                         ).First<Room>().RoomId;
-                Task t = new Task
+                ServiceTask t = new ServiceTask
                 {
                     RoomId = roomId,
                     TimeIssued = DateTime.Now,
                     TypeOfService = "Room Service",
                     Status = "Pending",
-                    Description = TaskEntryDescription.Text.Trim(),// sjekker at strengen ikke er for lang
+                    Description = ServiceTaskEntryDescription.Text.Trim(),// sjekker at strengen ikke er for lang
                     TimeCompleted = null
                 };
 
-                dac.Task.Add(t);
+                dac.ServiceTask.Add(t);
                 try
                 {
                     dac.SaveChanges();
@@ -99,7 +100,7 @@ namespace HotelBooking
                     new ErrorWindow(er).ShowDialog();
                     throw;
                 }
-                ICollectionView view = CollectionViewSource.GetDefaultView(TaskListView.ItemsSource);
+                ICollectionView view = CollectionViewSource.GetDefaultView(ServiceTaskListView.ItemsSource);
                 view.Refresh();
             }
             catch (InvalidOperationException ex)
@@ -112,7 +113,7 @@ namespace HotelBooking
         private void OrderMaintainanceButton_Click(object sender, RoutedEventArgs e)
         {
             int roomInput = 0;
-            Int32.TryParse(TaskEntryRoomNumber.Text, out roomInput);
+            Int32.TryParse(ServiceTaskEntryRoomNumber.Text, out roomInput);
             try
             {
                 int roomId = (
@@ -120,17 +121,17 @@ namespace HotelBooking
                         where r.RoomNumber == roomInput
                         select r
                         ).First<Room>().RoomId;
-                Task t = new Task
+                ServiceTask t = new ServiceTask
                 {
                     RoomId = roomId,
                     TimeIssued = DateTime.Now,
                     TypeOfService = "Maintainance",
                     Status = "Pending",
-                    Description = TaskEntryDescription.Text.Substring(0, 100),// sjekker at strengen ikke er for lang
+                    Description = ServiceTaskEntryDescription.Text.Trim(),// sjekker at strengen ikke er for lang
                     TimeCompleted = null
                 };
 
-                dac.Task.Add(t);
+                dac.ServiceTask.Add(t);
                 try
                 {
                     dac.SaveChanges();
@@ -140,25 +141,25 @@ namespace HotelBooking
                     new ErrorWindow(er).ShowDialog();
                     throw;
                 }
-                ICollectionView view = CollectionViewSource.GetDefaultView(TaskListView.ItemsSource);
+                ICollectionView view = CollectionViewSource.GetDefaultView(ServiceTaskListView.ItemsSource);
                 view.Refresh();
             }
             catch (InvalidOperationException ex)
             {
                 MessageBox.Show("Room number does not exist!", "Room entry error", MessageBoxButton.OK);
             }
-        }
 
+        }
         // tallvalidator, stjålet fra Kishor på stack overflow -t
-        private void TaskEntryRoomNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void ServiceTaskEntryRoomNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
         // sjekker at beskrivelsen ikke er for lang -t
-        private void TaskEntryDescription_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void ServiceTaskEntryDescription_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = (TaskEntryDescription.Text.Length > 100);
+            e.Handled = (ServiceTaskEntryDescription.Text.Length > 100);
         }
 
         private void ReservationList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -175,16 +176,16 @@ namespace HotelBooking
         }
 
 
-        // slette en task fra listen v/dobbelklikk -t
-        private void TaskListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        // slette en ServiceTask fra listen v/dobbelklikk -t
+        private void ServiceTaskListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var selectedItem = TaskListView.SelectedItem as Task;
-            MessageBoxResult messageBoxResult = MessageBox.Show(String.Format("Are you sure you want to delete this task?\n Room Number: {0}\nType: {1}\nDescription: {2}", selectedItem.Room.RoomNumber, selectedItem.TypeOfService, selectedItem.Description), "Delete Confirmation", MessageBoxButton.YesNo);
+            var selectedItem = ServiceTaskListView.SelectedItem as ServiceTask;
+            MessageBoxResult messageBoxResult = MessageBox.Show(String.Format("Are you sure you want to delete this ServiceTask?\n Room Number: {0}\nType: {1}\nDescription: {2}", selectedItem.Room.RoomNumber, selectedItem.TypeOfService, selectedItem.Description), "Delete Confirmation", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
-                task.Remove(selectedItem);
+                ServiceTask.Remove(selectedItem);
                 dac.SaveChanges();
-                ICollectionView view = CollectionViewSource.GetDefaultView(TaskListView.ItemsSource);
+                ICollectionView view = CollectionViewSource.GetDefaultView(ServiceTaskListView.ItemsSource);
                 view.Refresh();
             }
         }
