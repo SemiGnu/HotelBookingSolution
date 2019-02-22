@@ -32,7 +32,7 @@ namespace DesktopApp
             this.dac = dac;
 
         }
-        
+
 
         private void AddBooking_Click(object sender, RoutedEventArgs e)
         {
@@ -40,7 +40,7 @@ namespace DesktopApp
             int numberOfBeds;
             DateTime checkInDate;
             DateTime checkOutdate;
-            
+
             try
             {
                 numberOfBeds = int.Parse(NumberOfBedsTextBox.Text);
@@ -48,7 +48,7 @@ namespace DesktopApp
                 Customer c = dac.Customer.Where(cu => cu.Name == userFullName).FirstOrDefault<Customer>();
                 checkInDate = DateTime.Parse(CheckInDateBox.Text);
                 Room room = dac.Room.Where(ro => ro.NumberOfBeds == numberOfBeds).FirstOrDefault<Room>();
-                    
+
                 checkOutdate = DateTime.Parse(CheckOutDateBox.Text);
                 Booking booking = new Booking//(2, username, numberOfBeds, checkInDate, checkOutdate)
                 {
@@ -63,13 +63,14 @@ namespace DesktopApp
                 dac.SaveChanges();
                 this.Close();
 
-            } catch (FormatException ex) 
+            }
+            catch (FormatException ex)
             {
                 Console.WriteLine(ex);
                 MessageBox.Show("Check your input");
 
             }
-           
+
         }
 
         private void CancelCheckIn_Click(object sender, RoutedEventArgs e)
