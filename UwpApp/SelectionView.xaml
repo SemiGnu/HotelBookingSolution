@@ -9,11 +9,21 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <Grid>
-            <Button Name="Cleaning" Content="Cleaner" HorizontalAlignment="Left" Margin="164,320,0,0" VerticalAlignment="Top" Height="241" Width="328" Click="Selection_Click"/>
-            <Button Name="Maintenance" Content="Maintenance" HorizontalAlignment="Left" Margin="644,319,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.387,2.188" Height="243" Width="314" UseLayoutRounding="False" d:LayoutRounding="Auto" Click="Selection_Click"/>
-            <Button Name="Service" Content="Service" HorizontalAlignment="Left" Margin="1124,320,0,0" VerticalAlignment="Top" Height="241" Width="318" Click="Selection_Click"/>
-            
-        </Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10*" />
+            <ColumnDefinition Width="40*" />
+            <ColumnDefinition Width="10*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="10*" />
+        </Grid.RowDefinitions>
+        <Button Name="Cleaning" Content="Cleaner" Background="LightPink" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,10"  Click="Selection_Click" Grid.Column="1" Grid.Row="1"/>
+        <Button Name="Maintenance" Content="Maintenance" Background="Bisque" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,10"  Click="Selection_Click" Grid.Column="1" Grid.Row="2"/>
+        <Button Name="Service" Content="Service" Background="LimeGreen" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Margin="10,10,10,10" Click="Selection_Click" Grid.Column="1" Grid.Row="3"/>
+
     </Grid>
 </Page>
