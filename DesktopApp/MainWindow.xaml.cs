@@ -32,7 +32,6 @@ namespace HotelBooking
     /// 
     public partial class MainWindow : Window
     {
-        //ObservableCollection<TaskDummy> TaskDummyList { get; set; }
         DesktopAppConfig dac = new DesktopAppConfig();
         DbSet<Room> room;
         DbSet<Booking> booking;
@@ -114,34 +113,40 @@ namespace HotelBooking
         {
             int roomInput = 0;
             Int32.TryParse(TaskEntryRoomNumber.Text, out roomInput);
-            int roomId = (
-                from r in room
-                where r.RoomNumber == roomInput
-                select r
-                ).First<Room>().RoomId;
-
-            Task t = new Task
-            {
-                RoomId = roomId,
-                TimeIssued = DateTime.Now,
-                TypeOfService = "Maintainance",
-                Status = "Pending",
-                Description = TaskEntryDescription.Text,
-                TimeCompleted = null
-            };
-
-            dac.Task.Add(t);
             try
             {
-                dac.SaveChanges();
+                int roomId = (
+                        from r in room
+                        where r.RoomNumber == roomInput
+                        select r
+                        ).First<Room>().RoomId;
+                Task t = new Task
+                {
+                    RoomId = roomId,
+                    TimeIssued = DateTime.Now,
+                    TypeOfService = "Maintainance",
+                    Status = "Pending",
+                    Description = TaskEntryDescription.Text.Substring(0, 100),// sjekker at strengen ikke er for lang
+                    TimeCompleted = null
+                };
+
+                dac.Task.Add(t);
+                try
+                {
+                    dac.SaveChanges();
+                }
+                catch (Exception er)
+                {
+                    new ErrorWindow(er).ShowDialog();
+                    throw;
+                }
+                ICollectionView view = CollectionViewSource.GetDefaultView(TaskListView.ItemsSource);
+                view.Refresh();
             }
-            catch (Exception er)
+            catch (InvalidOperationException ex)
             {
-                new ErrorWindow(er).ShowDialog();
-                throw er;
+                MessageBox.Show("Room number does not exist!", "Room entry error", MessageBoxButton.OK);
             }
-            ICollectionView view = CollectionViewSource.GetDefaultView(TaskListView.ItemsSource);
-            view.Refresh();
         }
 
         // tallvalidator, stjålet fra Kishor på stack overflow -t
@@ -150,7 +155,7 @@ namespace HotelBooking
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-        // sjekker at beskrivelsen ikke er for lang
+        // sjekker at beskrivelsen ikke er for lang -t
         private void TaskEntryDescription_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = (TaskEntryDescription.Text.Length > 100) ;
@@ -182,11 +187,4 @@ namespace HotelBooking
 
     }
 
-    //class TaskDummy
-    //{
-    //    public string Type { get; set; }
-    //    public int RoomNumber { get; set; }
-    //    public string Description { get; set; }
-    //    public DateTime TimeAdded { get; set; }
-    //}
-}
+  
