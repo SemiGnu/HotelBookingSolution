@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DatabaseModel;
 
 
 namespace WebApp.Controllers
@@ -19,16 +20,16 @@ namespace WebApp.Controllers
         public bool addUser()
         {
             Customer customer;
-            string username = Request.Form[usernameLogin];
+           // string username = Request.Form[usernameLogin];
             //dac.Customer = this.customer; 
             return true;
         }
 
         public bool CheckUserNameExists(string username)
         {
-            room = dac.Room;
-            booking = dac.Booking;
-            customer = dac.Customer;
+            //room = dac.Room;
+            //booking = dac.Booking;
+            //customer = dac.Customer;
 
     //    room.Load();
     //    booking.Load();
