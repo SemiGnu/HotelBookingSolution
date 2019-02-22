@@ -73,33 +73,41 @@ namespace HotelBooking
         {
             int roomInput = 0;
             Int32.TryParse(TaskEntryRoomNumber.Text, out roomInput);
-            int roomId = (
-                from r in room
-                where r.RoomNumber == roomInput
-                select r
-                ).First<Room>().RoomId;
-            Task t = new Task
-            {
-                RoomId = roomId,
-                TimeIssued = DateTime.Now,
-                TypeOfService = "Room Service",
-                Status = "Pending",
-                Description = TaskEntryDescription.Text,
-                TimeCompleted = null                
-            };
-
-            dac.Task.Add(t);
             try
             {
-                dac.SaveChanges();
+                int roomId = (
+                        from r in room
+                        where r.RoomNumber == roomInput
+                        select r
+                        ).First<Room>().RoomId;
+                Task t = new Task
+                {
+                    RoomId = roomId,
+                    TimeIssued = DateTime.Now,
+                    TypeOfService = "Room Service",
+                    Status = "Pending",
+                    Description = TaskEntryDescription.Text.Substring(0,100),// sjekker at strengen ikke er for lang
+                    TimeCompleted = null
+                };
+
+                dac.Task.Add(t);
+                try
+                {
+                    dac.SaveChanges();
+                }
+                catch (Exception er)
+                {
+                    new ErrorWindow(er).ShowDialog();
+                    throw;
+                }
+                ICollectionView view = CollectionViewSource.GetDefaultView(TaskListView.ItemsSource);
+                view.Refresh();
             }
-            catch (Exception er)
+            catch (InvalidOperationException ex)
             {
-                new ErrorWindow(er).ShowDialog();
-                throw;
+                MessageBox.Show("Room number does not exist!", "Room entry error", MessageBoxButton.OK);
             }
-            ICollectionView view = CollectionViewSource.GetDefaultView(TaskListView.ItemsSource);
-            view.Refresh();
+            
         }
         // se OrderRoomServiceButton_Click -t 
         private void OrderMaintainanceButton_Click(object sender, RoutedEventArgs e)
@@ -114,7 +122,6 @@ namespace HotelBooking
 
             Task t = new Task
             {
-                //TaskId = -1,
                 RoomId = roomId,
                 TimeIssued = DateTime.Now,
                 TypeOfService = "Maintainance",
@@ -143,6 +150,11 @@ namespace HotelBooking
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
+        // sjekker at beskrivelsen ikke er for lang
+        private void TaskEntryDescription_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = (TaskEntryDescription.Text.Length > 100) ;
+        }
 
         private void ReservationList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -159,11 +171,15 @@ namespace HotelBooking
         private void TaskListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var selectedItem = TaskListView.SelectedItem as Task;
-            task.Remove(selectedItem);
-            dac.SaveChanges();
-            ICollectionView view = CollectionViewSource.GetDefaultView(TaskListView.ItemsSource);
-            view.Refresh();
+            MessageBoxResult messageBoxResult = MessageBox.Show(String.Format("Are you sure you want to delete this task?\n Room Number: {0}\nType: {1}\nDescription: {2}", selectedItem.Room.RoomNumber,selectedItem.TypeOfService,selectedItem.Description), "Delete Confirmation", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes) { 
+                task.Remove(selectedItem);
+                dac.SaveChanges();
+                ICollectionView view = CollectionViewSource.GetDefaultView(TaskListView.ItemsSource);
+                view.Refresh();
+            }
         }
+
     }
 
     //class TaskDummy
