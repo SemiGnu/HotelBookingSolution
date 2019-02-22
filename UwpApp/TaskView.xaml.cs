@@ -40,5 +40,10 @@ namespace UwpApp
         {
 
         }
+
+        private void ReturnToSelection(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(SelectionView));
+        }
     }
 }

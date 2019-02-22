@@ -30,7 +30,7 @@ namespace UwpApp
 
         private void Selection_Click(object sender, RoutedEventArgs e)
         {
-            string name = (sender as HyperlinkButton).Content.ToString();
+            string name = (sender as Button).Content.ToString();
             this.Frame.Navigate(typeof(TaskView), name);
            
 
