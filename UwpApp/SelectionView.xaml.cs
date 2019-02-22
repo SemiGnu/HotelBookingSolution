@@ -20,9 +20,9 @@ namespace UwpApp
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class Selection : Page
+    public sealed partial class SelectionView : Page
     {
-        public Selection()
+        public SelectionView()
         {
             this.InitializeComponent();
           
@@ -30,16 +30,9 @@ namespace UwpApp
 
         private void Selection_Click(object sender, RoutedEventArgs e)
         {
-            string name = (sender as Button).Content.ToString();
-
-            switch(name)
-            {
-                case "clean":
-                case "maintenance":
-                case "service":
-                default:
-                    throw new ArgumentException("unknown workertype");
-            }
+            string name = (sender as HyperlinkButton).Content.ToString();
+            this.Frame.Navigate(typeof(TaskView), name);
+           
 
         }
     }

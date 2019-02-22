@@ -26,6 +26,7 @@ namespace UwpApp
         {
             
             this.InitializeComponent();
+
         }
 
        

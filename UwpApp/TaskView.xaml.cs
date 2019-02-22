@@ -22,10 +22,19 @@ namespace UwpApp
     /// </summary>
     public sealed partial class TaskView : Page
     {
+      
         public TaskView()
         {
             this.InitializeComponent();
         }
+
+       
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            typeOfService.Text = e.Parameter.ToString();
+            base.OnNavigatedTo(e);
+        }
+
 
         private void Add_Task(object sender, RoutedEventArgs e)
         {
