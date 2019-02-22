@@ -4,16 +4,25 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
+using DesktopApp;
 
- 
 
 namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        bool loggedIn = false;
+
+        public void savedata(FormCollection fomr)
+        {
+            string name = Request.Form["name"];
+            string surname = Request.Form["surname"];
+            string age = Request.Form["age"];
+            string gender = Request.Form["gender"];
 
 
+            bool loggedIn = false;
+
+        
 
         public ActionResult Index()
         {
@@ -45,6 +54,16 @@ namespace WebApp.Controllers
                 return Login();
                 
             }
+        }
+        public bool addUser()
+        {
+            Customer customer;
+            
+            //dac.Customer = this.customer; 
+            return true;
+        }
+
+      
         }
     }
 }
