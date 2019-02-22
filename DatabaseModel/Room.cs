@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DesktopApp
+namespace DatabaseModel
 {
     using System;
     using System.Collections.Generic;
@@ -18,7 +18,7 @@ namespace DesktopApp
         public Room()
         {
             this.Booking = new HashSet<Booking>();
-            this.Task = new HashSet<Task>();
+            this.ServiceTask = new HashSet<ServiceTask>();
         }
     
         public int RoomId { get; set; }
@@ -30,6 +30,6 @@ namespace DesktopApp
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Booking> Booking { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Task> Task { get; set; }
+        public virtual ICollection<ServiceTask> ServiceTask { get; set; }
     }
 }

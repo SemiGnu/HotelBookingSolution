@@ -7,29 +7,24 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DesktopApp
+namespace DatabaseModel
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Room
+    public partial class Customer
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Room()
+        public Customer()
         {
             this.Booking = new HashSet<Booking>();
-            this.Task = new HashSet<Task>();
         }
     
-        public int RoomId { get; set; }
-        public int Size { get; set; }
-        public int NumberOfBeds { get; set; }
-        public bool Booked { get; set; }
-        public int RoomNumber { get; set; }
+        public string Username { get; set; }
+        public string Name { get; set; }
+        public string Password { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Booking> Booking { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Task> Task { get; set; }
     }
 }

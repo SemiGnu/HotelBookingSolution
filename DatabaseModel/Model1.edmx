@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="DesktopApp.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="dat154_19_2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Booking">
           <Key>
             <PropertyRef Name="BookingId" />
@@ -33,7 +33,7 @@
           <Property Name="Booked" Type="bit" Nullable="false" />
           <Property Name="RoomNumber" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Task">
+        <EntityType Name="ServiceTask">
           <Key>
             <PropertyRef Name="TaskId" />
           </Key>
@@ -71,21 +71,21 @@
         </Association>
         <Association Name="FK_Task_ToRoom">
           <End Role="Room" Type="Self.Room" Multiplicity="1" />
-          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+          <End Role="ServiceTask" Type="Self.ServiceTask" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Room">
               <PropertyRef Name="RoomId" />
             </Principal>
-            <Dependent Role="Task">
+            <Dependent Role="ServiceTask">
               <PropertyRef Name="RoomId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="DesktopAppStoreContainer">
+        <EntityContainer Name="dat154_19_2ModelStoreContainer">
           <EntitySet Name="Booking" EntityType="Self.Booking" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Room" EntityType="Self.Room" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceTask" EntityType="Self.ServiceTask" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Table_ToCustomer" Association="Self.FK_Table_ToCustomer">
             <End Role="Customer" EntitySet="Customer" />
             <End Role="Booking" EntitySet="Booking" />
@@ -96,13 +96,14 @@
           </AssociationSet>
           <AssociationSet Name="FK_Task_ToRoom" Association="Self.FK_Task_ToRoom">
             <End Role="Room" EntitySet="Room" />
-            <End Role="Task" EntitySet="Task" />
+            <End Role="ServiceTask" EntitySet="ServiceTask" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="DesktopApp" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="dat154_19_2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Booking">
           <Key>
             <PropertyRef Name="BookingId" />
@@ -132,11 +133,11 @@
           <Property Name="Size" Type="Int32" Nullable="false" />
           <Property Name="NumberOfBeds" Type="Int32" Nullable="false" />
           <Property Name="Booked" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Booking" Relationship="Self.FK_Table_ToRoom" FromRole="Room" ToRole="Booking" />
-          <NavigationProperty Name="Task" Relationship="Self.FK_Task_ToRoom" FromRole="Room" ToRole="Task" />
           <Property Name="RoomNumber" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Booking" Relationship="Self.FK_Table_ToRoom" FromRole="Room" ToRole="Booking" />
+          <NavigationProperty Name="ServiceTask" Relationship="Self.FK_Task_ToRoom" FromRole="Room" ToRole="ServiceTask" />
         </EntityType>
-        <EntityType Name="Task">
+        <EntityType Name="ServiceTask">
           <Key>
             <PropertyRef Name="TaskId" />
           </Key>
@@ -146,8 +147,8 @@
           <Property Name="TimeIssued" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TimeCompleted" Type="DateTime" Precision="3" />
           <Property Name="RoomId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Room" Relationship="Self.FK_Task_ToRoom" FromRole="Task" ToRole="Room" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Room" Relationship="Self.FK_Task_ToRoom" FromRole="ServiceTask" ToRole="Room" />
         </EntityType>
         <Association Name="FK_Table_ToCustomer">
           <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
@@ -175,21 +176,21 @@
         </Association>
         <Association Name="FK_Task_ToRoom">
           <End Role="Room" Type="Self.Room" Multiplicity="1" />
-          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+          <End Role="ServiceTask" Type="Self.ServiceTask" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Room">
               <PropertyRef Name="RoomId" />
             </Principal>
-            <Dependent Role="Task">
+            <Dependent Role="ServiceTask">
               <PropertyRef Name="RoomId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="DesktopAppConfig" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="dat154_19_2Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Booking" EntityType="Self.Booking" />
           <EntitySet Name="Customer" EntityType="Self.Customer" />
           <EntitySet Name="Room" EntityType="Self.Room" />
-          <EntitySet Name="Task" EntityType="Self.Task" />
+          <EntitySet Name="ServiceTask" EntityType="Self.ServiceTask" />
           <AssociationSet Name="FK_Table_ToCustomer" Association="Self.FK_Table_ToCustomer">
             <End Role="Customer" EntitySet="Customer" />
             <End Role="Booking" EntitySet="Booking" />
@@ -200,7 +201,7 @@
           </AssociationSet>
           <AssociationSet Name="FK_Task_ToRoom" Association="Self.FK_Task_ToRoom">
             <End Role="Room" EntitySet="Room" />
-            <End Role="Task" EntitySet="Task" />
+            <End Role="ServiceTask" EntitySet="ServiceTask" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -208,9 +209,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="DesktopAppStoreContainer" CdmEntityContainer="DesktopAppConfig">
+        <EntityContainerMapping StorageEntityContainer="dat154_19_2ModelStoreContainer" CdmEntityContainer="dat154_19_2Entities">
           <EntitySetMapping Name="Booking">
-            <EntityTypeMapping TypeName="DesktopApp.Booking">
+            <EntityTypeMapping TypeName="dat154_19_2Model.Booking">
               <MappingFragment StoreEntitySet="Booking">
                 <ScalarProperty Name="BookingId" ColumnName="BookingId" />
                 <ScalarProperty Name="CustomerUsername" ColumnName="CustomerUsername" />
@@ -221,7 +222,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Customer">
-            <EntityTypeMapping TypeName="DesktopApp.Customer">
+            <EntityTypeMapping TypeName="dat154_19_2Model.Customer">
               <MappingFragment StoreEntitySet="Customer">
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -230,26 +231,26 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Room">
-            <EntityTypeMapping TypeName="DesktopApp.Room">
+            <EntityTypeMapping TypeName="dat154_19_2Model.Room">
               <MappingFragment StoreEntitySet="Room">
-                <ScalarProperty Name="RoomNumber" ColumnName="RoomNumber" />
                 <ScalarProperty Name="RoomId" ColumnName="RoomId" />
                 <ScalarProperty Name="Size" ColumnName="Size" />
                 <ScalarProperty Name="NumberOfBeds" ColumnName="NumberOfBeds" />
                 <ScalarProperty Name="Booked" ColumnName="Booked" />
+                <ScalarProperty Name="RoomNumber" ColumnName="RoomNumber" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Task">
-            <EntityTypeMapping TypeName="DesktopApp.Task">
-              <MappingFragment StoreEntitySet="Task">
-                <ScalarProperty Name="Description" ColumnName="Description" />
+          <EntitySetMapping Name="ServiceTask">
+            <EntityTypeMapping TypeName="dat154_19_2Model.ServiceTask">
+              <MappingFragment StoreEntitySet="ServiceTask">
                 <ScalarProperty Name="TaskId" ColumnName="TaskId" />
                 <ScalarProperty Name="TypeOfService" ColumnName="TypeOfService" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="TimeIssued" ColumnName="TimeIssued" />
                 <ScalarProperty Name="TimeCompleted" ColumnName="TimeCompleted" />
                 <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

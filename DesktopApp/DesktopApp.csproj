@@ -70,6 +70,9 @@
     <Compile Include="CheckInWindow.xaml.cs">
       <DependentUpon>CheckInWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CheckOutWindow.xaml.cs">
+      <DependentUpon>CheckOutWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Customer.cs">
       <DependentUpon>DesktopAppModel.tt</DependentUpon>
     </Compile>
@@ -88,6 +91,10 @@
       <DependentUpon>DesktopAppModel.tt</DependentUpon>
     </Compile>
     <Page Include="CheckInWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CheckOutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

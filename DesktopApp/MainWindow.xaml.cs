@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
@@ -31,7 +32,6 @@ namespace HotelBooking
     /// 
     public partial class MainWindow : Window
     {
-        //ObservableCollection<TaskDummy> TaskDummyList { get; set; }
         DesktopAppConfig dac = new DesktopAppConfig();
         DbSet<Room> room;
         DbSet<Booking> booking;
@@ -55,18 +55,9 @@ namespace HotelBooking
             //filling the list in reservations with data from booking
             reservationList.DataContext = booking.Local;
 
-            //filling the list in reservations with data from booking -t
-            TaskListView.DataContext = task.Local;
+            //filling the list in reservations with data from booking, only "Pending" tasks -t
+            TaskListView.DataContext = task.Local.Where<Task>(task => task.Status == "Pending");
 
-
-
-
-            //DataContext = this;
-            //TaskDummyList = new ObservableCollection<TaskDummy> {
-            //    new TaskDummy {Type = "Room Service", RoomNumber = 101, Description = "More pizza!", TimeAdded = new DateTime(2019,1,20,14,13,0) },
-            //    new TaskDummy {Type = "Room Service", RoomNumber = 102, Description = "More beer!", TimeAdded = new DateTime(2019,1,20,14,12,0) },
-            //    new TaskDummy {Type = "Maintainance", RoomNumber = 101, Description = "Muh fan not werking", TimeAdded = new DateTime(2019,1,20,12,13,0) }
-            //};
 
         }
 
@@ -76,57 +67,85 @@ namespace HotelBooking
             new CheckInWindow(dac).ShowDialog();
         }
 
+        // Legger til en room service task, henter roomid fra room number input -t
         private void OrderRoomServiceButton_Click(object sender, RoutedEventArgs e)
         {
-            int room = 0;
-            Int32.TryParse(TaskEntryRoomNumber.Text, out room);
-            Task t = new Task
-            {
-                TaskId = 2,
-                RoomId = room,
-                TimeIssued = DateTime.Now,
-                TypeOfService = "Room Service",
-                Status = "Pending",
-                Description = TaskEntryDescription.Text,
-                TimeCompleted = null                
-            };
-
-            dac.Task.Add(t);
+            int roomInput = 0;
+            Int32.TryParse(TaskEntryRoomNumber.Text, out roomInput);
             try
             {
-                dac.SaveChanges();
-            }
-            catch (Exception er)
-            {
-                new ErrorWindow(er).ShowDialog();
-                throw;
-            }
-        }
+                int roomId = (
+                        from r in room
+                        where r.RoomNumber == roomInput
+                        select r
+                        ).First<Room>().RoomId;
+                Task t = new Task
+                {
+                    RoomId = roomId,
+                    TimeIssued = DateTime.Now,
+                    TypeOfService = "Room Service",
+                    Status = "Pending",
+                    Description = TaskEntryDescription.Text.Trim(),// sjekker at strengen ikke er for lang
+                    TimeCompleted = null
+                };
 
+                dac.Task.Add(t);
+                try
+                {
+                    dac.SaveChanges();
+                }
+                catch (Exception er)
+                {
+                    new ErrorWindow(er).ShowDialog();
+                    throw;
+                }
+                ICollectionView view = CollectionViewSource.GetDefaultView(TaskListView.ItemsSource);
+                view.Refresh();
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show("Room number does not exist!", "Room entry error", MessageBoxButton.OK);
+            }
+
+        }
+        // se OrderRoomServiceButton_Click -t 
         private void OrderMaintainanceButton_Click(object sender, RoutedEventArgs e)
         {
-            int room = 0;
-            Int32.TryParse(TaskEntryRoomNumber.Text, out room);
-            Task t = new Task
-            {
-                TaskId = -1,
-                RoomId = room,
-                TimeIssued = DateTime.Now,
-                TypeOfService = "Maintainance",
-                Status = "Pending",
-                Description = TaskEntryDescription.Text,
-                TimeCompleted = null
-            };
-
-            dac.Task.Add(t);
+            int roomInput = 0;
+            Int32.TryParse(TaskEntryRoomNumber.Text, out roomInput);
             try
             {
-                dac.SaveChanges();
+                int roomId = (
+                        from r in room
+                        where r.RoomNumber == roomInput
+                        select r
+                        ).First<Room>().RoomId;
+                Task t = new Task
+                {
+                    RoomId = roomId,
+                    TimeIssued = DateTime.Now,
+                    TypeOfService = "Maintainance",
+                    Status = "Pending",
+                    Description = TaskEntryDescription.Text.Substring(0, 100),// sjekker at strengen ikke er for lang
+                    TimeCompleted = null
+                };
+
+                dac.Task.Add(t);
+                try
+                {
+                    dac.SaveChanges();
+                }
+                catch (Exception er)
+                {
+                    new ErrorWindow(er).ShowDialog();
+                    throw;
+                }
+                ICollectionView view = CollectionViewSource.GetDefaultView(TaskListView.ItemsSource);
+                view.Refresh();
             }
-            catch (Exception er)
+            catch (InvalidOperationException ex)
             {
-                new ErrorWindow(er).ShowDialog();
-                throw;
+                MessageBox.Show("Room number does not exist!", "Room entry error", MessageBoxButton.OK);
             }
         }
 
@@ -136,13 +155,41 @@ namespace HotelBooking
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-    }
+        // sjekker at beskrivelsen ikke er for lang -t
+        private void TaskEntryDescription_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = (TaskEntryDescription.Text.Length > 100);
+        }
 
-    //class TaskDummy
-    //{
-    //    public string Type { get; set; }
-    //    public int RoomNumber { get; set; }
-    //    public string Description { get; set; }
-    //    public DateTime TimeAdded { get; set; }
-    //}
+        private void ReservationList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            new CheckOutWindow(dac).ShowDialog();
+        }
+
+       
+
+        private void CheckOutButton_Click(object sender, RoutedEventArgs e)
+        {
+            new CheckOutWindow(dac).ShowDialog();
+
+        }
+
+
+        // slette en task fra listen v/dobbelklikk -t
+        private void TaskListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var selectedItem = TaskListView.SelectedItem as Task;
+            MessageBoxResult messageBoxResult = MessageBox.Show(String.Format("Are you sure you want to delete this task?\n Room Number: {0}\nType: {1}\nDescription: {2}", selectedItem.Room.RoomNumber, selectedItem.TypeOfService, selectedItem.Description), "Delete Confirmation", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                task.Remove(selectedItem);
+                dac.SaveChanges();
+                ICollectionView view = CollectionViewSource.GetDefaultView(TaskListView.ItemsSource);
+                view.Refresh();
+            }
+        }
+
+    }
 }
+
+  
