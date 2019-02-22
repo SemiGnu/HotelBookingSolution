@@ -49,7 +49,7 @@ namespace DesktopApp
                 checkInDate = DateTime.Parse(CheckInDateBox.Text);
                 Room room = dac.Room.Where(ro => ro.NumberOfBeds == numberOfBeds).FirstOrDefault<Room>();
 
-                checkOutdate = DateTime.Parse(CheckOutDateBox.Text);
+                checkOutdate = DateTime.Parse(CheckOutDateBox.Text); 
                 Booking booking = new Booking//(2, username, numberOfBeds, checkInDate, checkOutdate)
                 {
 
