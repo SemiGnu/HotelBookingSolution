@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.Entity;
+using DatabaseModel;
 
 namespace DesktopApp
 {
@@ -20,13 +21,13 @@ namespace DesktopApp
     /// </summary>
     public partial class CheckInWindow : Window
     {
-        DesktopAppConfig dac;
+        dat154_19_2Entities dac;
         public CheckInWindow()
         {
             InitializeComponent();
         }
 
-        public CheckInWindow(DesktopAppConfig dac)
+        public CheckInWindow(dat154_19_2Entities dac)
         {
             InitializeComponent();
             this.dac = dac;
