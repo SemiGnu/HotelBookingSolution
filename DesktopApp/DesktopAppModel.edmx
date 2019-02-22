@@ -4,12 +4,12 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DesktopApp.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DesktopApp.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Booking">
           <Key>
             <PropertyRef Name="BookingId" />
           </Key>
-          <Property Name="BookingId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="BookingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerUsername" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="RoomId" Type="int" Nullable="false" />
           <Property Name="CheckInDate" Type="datetime" Nullable="false" />
@@ -27,21 +27,23 @@
           <Key>
             <PropertyRef Name="RoomId" />
           </Key>
-          <Property Name="RoomId" Type="int" Nullable="false" />
+          <Property Name="RoomId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Size" Type="int" Nullable="false" />
           <Property Name="NumberOfBeds" Type="int" Nullable="false" />
           <Property Name="Booked" Type="bit" Nullable="false" />
+          <Property Name="RoomNumber" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Task">
           <Key>
             <PropertyRef Name="TaskId" />
           </Key>
-          <Property Name="TaskId" Type="int" Nullable="false" />
+          <Property Name="TaskId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TypeOfService" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Status" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="TimeIssued" Type="datetime" Nullable="false" />
           <Property Name="TimeCompleted" Type="datetime" />
           <Property Name="RoomId" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <Association Name="FK_Table_ToCustomer">
           <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
@@ -97,8 +99,7 @@
             <End Role="Task" EntitySet="Task" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DesktopApp" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -127,24 +128,26 @@
           <Key>
             <PropertyRef Name="RoomId" />
           </Key>
-          <Property Name="RoomId" Type="Int32" Nullable="false" />
+          <Property Name="RoomId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Size" Type="Int32" Nullable="false" />
           <Property Name="NumberOfBeds" Type="Int32" Nullable="false" />
           <Property Name="Booked" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Booking" Relationship="Self.FK_Table_ToRoom" FromRole="Room" ToRole="Booking" />
           <NavigationProperty Name="Task" Relationship="Self.FK_Task_ToRoom" FromRole="Room" ToRole="Task" />
+          <Property Name="RoomNumber" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Task">
           <Key>
             <PropertyRef Name="TaskId" />
           </Key>
-          <Property Name="TaskId" Type="Int32" Nullable="false" />
+          <Property Name="TaskId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TypeOfService" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="TimeIssued" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TimeCompleted" Type="DateTime" Precision="3" />
           <Property Name="RoomId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Room" Relationship="Self.FK_Task_ToRoom" FromRole="Task" ToRole="Room" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
         </EntityType>
         <Association Name="FK_Table_ToCustomer">
           <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
@@ -229,6 +232,7 @@
           <EntitySetMapping Name="Room">
             <EntityTypeMapping TypeName="DesktopApp.Room">
               <MappingFragment StoreEntitySet="Room">
+                <ScalarProperty Name="RoomNumber" ColumnName="RoomNumber" />
                 <ScalarProperty Name="RoomId" ColumnName="RoomId" />
                 <ScalarProperty Name="Size" ColumnName="Size" />
                 <ScalarProperty Name="NumberOfBeds" ColumnName="NumberOfBeds" />
@@ -239,6 +243,7 @@
           <EntitySetMapping Name="Task">
             <EntityTypeMapping TypeName="DesktopApp.Task">
               <MappingFragment StoreEntitySet="Task">
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="TaskId" ColumnName="TaskId" />
                 <ScalarProperty Name="TypeOfService" ColumnName="TypeOfService" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
