@@ -11,13 +11,9 @@ namespace DesktopApp
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
+    
     public partial class Booking
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int BookingId { get; set; }
         public string CustomerUsername { get; set; }
         public int RoomId { get; set; }

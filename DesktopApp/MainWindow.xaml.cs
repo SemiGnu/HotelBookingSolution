@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
@@ -55,18 +56,9 @@ namespace HotelBooking
             //filling the list in reservations with data from booking
             reservationList.DataContext = booking.Local;
 
-            //filling the list in reservations with data from booking -t
-            TaskListView.DataContext = task.Local;
+            //filling the list in reservations with data from booking, only "Pending" tasks -t
+            TaskListView.DataContext = task.Local.Where<Task>(task => task.Status == "Pending");
 
-
-
-
-            //DataContext = this;
-            //TaskDummyList = new ObservableCollection<TaskDummy> {
-            //    new TaskDummy {Type = "Room Service", RoomNumber = 101, Description = "More pizza!", TimeAdded = new DateTime(2019,1,20,14,13,0) },
-            //    new TaskDummy {Type = "Room Service", RoomNumber = 102, Description = "More beer!", TimeAdded = new DateTime(2019,1,20,14,12,0) },
-            //    new TaskDummy {Type = "Maintainance", RoomNumber = 101, Description = "Muh fan not werking", TimeAdded = new DateTime(2019,1,20,12,13,0) }
-            //};
 
         }
 
@@ -76,14 +68,19 @@ namespace HotelBooking
             new CheckInWindow(dac).ShowDialog();
         }
 
+        // Legger til en room service task, henter roomid fra room number input -t
         private void OrderRoomServiceButton_Click(object sender, RoutedEventArgs e)
         {
-            int room = 0;
-            Int32.TryParse(TaskEntryRoomNumber.Text, out room);
+            int roomInput = 0;
+            Int32.TryParse(TaskEntryRoomNumber.Text, out roomInput);
+            int roomId = (
+                from r in room
+                where r.RoomNumber == roomInput
+                select r
+                ).First<Room>().RoomId;
             Task t = new Task
             {
-                TaskId = 2,
-                RoomId = room,
+                RoomId = roomId,
                 TimeIssued = DateTime.Now,
                 TypeOfService = "Room Service",
                 Status = "Pending",
@@ -101,16 +98,24 @@ namespace HotelBooking
                 new ErrorWindow(er).ShowDialog();
                 throw;
             }
+            ICollectionView view = CollectionViewSource.GetDefaultView(TaskListView.ItemsSource);
+            view.Refresh();
         }
-
+        // se OrderRoomServiceButton_Click -t 
         private void OrderMaintainanceButton_Click(object sender, RoutedEventArgs e)
         {
-            int room = 0;
-            Int32.TryParse(TaskEntryRoomNumber.Text, out room);
+            int roomInput = 0;
+            Int32.TryParse(TaskEntryRoomNumber.Text, out roomInput);
+            int roomId = (
+                from r in room
+                where r.RoomNumber == roomInput
+                select r
+                ).First<Room>().RoomId;
+
             Task t = new Task
             {
-                TaskId = -1,
-                RoomId = room,
+                //TaskId = -1,
+                RoomId = roomId,
                 TimeIssued = DateTime.Now,
                 TypeOfService = "Maintainance",
                 Status = "Pending",
@@ -126,8 +131,10 @@ namespace HotelBooking
             catch (Exception er)
             {
                 new ErrorWindow(er).ShowDialog();
-                throw;
+                throw er;
             }
+            ICollectionView view = CollectionViewSource.GetDefaultView(TaskListView.ItemsSource);
+            view.Refresh();
         }
 
         // tallvalidator, stjålet fra Kishor på stack overflow -t
@@ -145,6 +152,17 @@ namespace HotelBooking
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             new CheckOutWindow(dac).ShowDialog();
+        }
+
+
+        // slette en task fra listen v/dobbelklikk -t
+        private void TaskListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var selectedItem = TaskListView.SelectedItem as Task;
+            task.Remove(selectedItem);
+            dac.SaveChanges();
+            ICollectionView view = CollectionViewSource.GetDefaultView(TaskListView.ItemsSource);
+            view.Refresh();
         }
     }
 
