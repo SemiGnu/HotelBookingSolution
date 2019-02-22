@@ -166,9 +166,12 @@ namespace HotelBooking
             new CheckOutWindow(dac).ShowDialog();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+       
+
+        private void CheckOutButton_Click(object sender, RoutedEventArgs e)
         {
             new CheckOutWindow(dac).ShowDialog();
+
         }
 
 

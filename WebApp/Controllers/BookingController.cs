@@ -5,10 +5,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+
 namespace WebApp.Controllers
 {
-    //public class BookingController : Controller
-    //{
+    public class BookingController : Controller
+    {
     //    DesktopAppConfig dac = new DesktopAppConfig();
     //    DbSet<Room> room;
     //    DbSet<Booking> booking;
@@ -37,5 +38,5 @@ namespace WebApp.Controllers
     //        Console.WriteLine("does not exist. yay");
 
     //    }
-    //}
+    }
 }
