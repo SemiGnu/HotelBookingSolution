@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -26,6 +29,32 @@ namespace UwpApp
         public TaskView()
         {
             this.InitializeComponent();
+
+            using (var client = new HttpClient())
+            {
+                var response = "";
+                Task task = Task.Run(async () =>
+                {
+                    response = await client.GetStringAsync(new Uri("http://localhost:52285/api/ServiceTasks"));
+                });
+                task.Wait();
+                List<ServiceTask> serviceTaskList = JsonConvert.DeserializeObject<List<ServiceTask>>(response);
+
+                List<Task> roomNumberTaskList = new List<Task>();
+                
+                foreach (ServiceTask serviceTask in serviceTaskList)
+                {
+                    roomNumberTaskList.Add(Task.Run(async () =>
+                    {
+                        string uri = String.Format("http://localhost:52285/api/Rooms/{0}", serviceTask.RoomId);
+                        response = await client.GetStringAsync(new Uri(uri));
+                        serviceTask.Room = JsonConvert.DeserializeObject<Room>(response);
+                    }));
+                }
+                Task.WaitAll(roomNumberTaskList.ToArray());
+
+                TaskListView.ItemsSource = serviceTaskList;
+            }
         }
 
        

@@ -13,45 +13,45 @@ using DatabaseModel;
 
 namespace WebApp.Controllers
 {
-    public class ServiceTasksController : ApiController
+    public class RoomsController : ApiController
     {
         private dat154_19_2Entities db = new dat154_19_2Entities();
 
-        // GET: api/ServiceTasks
-        public IQueryable<ServiceTask> GetServiceTask()
+        // GET: api/Rooms
+        public IQueryable<Room> GetRoom()
         {
             db.Configuration.ProxyCreationEnabled = false;
-            return db.ServiceTask;
+            return db.Room;
         }
 
-        // GET: api/ServiceTasks/5
-        [ResponseType(typeof(ServiceTask))]
-        public async Task<IHttpActionResult> GetServiceTask(int id)
+        // GET: api/Rooms/5
+        [ResponseType(typeof(Room))]
+        public async Task<IHttpActionResult> GetRoom(int id)
         {
-            ServiceTask serviceTask = await db.ServiceTask.FindAsync(id);
-            if (serviceTask == null)
+            Room room = await db.Room.FindAsync(id);
+            if (room == null)
             {
                 return NotFound();
             }
 
-            return Ok(serviceTask);
+            return Ok(room);
         }
 
-        // PUT: api/ServiceTasks/5
+        // PUT: api/Rooms/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutServiceTask(int id, ServiceTask serviceTask)
+        public async Task<IHttpActionResult> PutRoom(int id, Room room)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != serviceTask.TaskId)
+            if (id != room.RoomId)
             {
                 return BadRequest();
             }
 
-            db.Entry(serviceTask).State = EntityState.Modified;
+            db.Entry(room).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +59,7 @@ namespace WebApp.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ServiceTaskExists(id))
+                if (!RoomExists(id))
                 {
                     return NotFound();
                 }
@@ -72,35 +72,35 @@ namespace WebApp.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/ServiceTasks
-        [ResponseType(typeof(ServiceTask))]
-        public async Task<IHttpActionResult> PostServiceTask(ServiceTask serviceTask)
+        // POST: api/Rooms
+        [ResponseType(typeof(Room))]
+        public async Task<IHttpActionResult> PostRoom(Room room)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.ServiceTask.Add(serviceTask);
+            db.Room.Add(room);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = serviceTask.TaskId }, serviceTask);
+            return CreatedAtRoute("DefaultApi", new { id = room.RoomId }, room);
         }
 
-        // DELETE: api/ServiceTasks/5
-        [ResponseType(typeof(ServiceTask))]
-        public async Task<IHttpActionResult> DeleteServiceTask(int id)
+        // DELETE: api/Rooms/5
+        [ResponseType(typeof(Room))]
+        public async Task<IHttpActionResult> DeleteRoom(int id)
         {
-            ServiceTask serviceTask = await db.ServiceTask.FindAsync(id);
-            if (serviceTask == null)
+            Room room = await db.Room.FindAsync(id);
+            if (room == null)
             {
                 return NotFound();
             }
 
-            db.ServiceTask.Remove(serviceTask);
+            db.Room.Remove(room);
             await db.SaveChangesAsync();
 
-            return Ok(serviceTask);
+            return Ok(room);
         }
 
         protected override void Dispose(bool disposing)
@@ -112,9 +112,9 @@ namespace WebApp.Controllers
             base.Dispose(disposing);
         }
 
-        private bool ServiceTaskExists(int id)
+        private bool RoomExists(int id)
         {
-            return db.ServiceTask.Count(e => e.TaskId == id) > 0;
+            return db.Room.Count(e => e.RoomId == id) > 0;
         }
     }
 }
