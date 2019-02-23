@@ -50,8 +50,8 @@ namespace DesktopApp
             {
                 userFullName = CustomerNameTextBox.Text;
                 roomNr = int.Parse(RoomNumberTextBox.Text);
-                Customer c = dac.Customer.Where(cu => cu.Name == userFullName).FirstOrDefault<Customer>();
-                Booking b = dac.Booking.Where(bo => bo.Customer.Username == c.Username && bo.RoomId == roomNr).FirstOrDefault<Booking>();
+                Customer c = dac.Customer.FirstOrDefault(cu => cu.Name == userFullName);
+                Booking b = dac.Booking.FirstOrDefault(bo => bo.Customer.Username == c.Username && bo.RoomId == roomNr);
 
                 dac.Booking.Remove(b);
                 dac.SaveChanges();
@@ -78,7 +78,7 @@ namespace DesktopApp
             Booking selectedBooking = (Booking) ReservationListView.SelectedItem;
             RoomNumberTextBox.Text = selectedBooking.RoomId.ToString();
 
-            CustomerNameTextBox.Text = dac.Customer.Where(cu => cu.Username == selectedBooking.CustomerUsername).FirstOrDefault<Customer>().Name;
+            CustomerNameTextBox.Text = dac.Customer.FirstOrDefault(cu => cu.Username == selectedBooking.CustomerUsername).Name;
 
 
         }
