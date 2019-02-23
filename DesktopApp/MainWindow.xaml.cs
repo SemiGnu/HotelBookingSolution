@@ -164,7 +164,7 @@ namespace HotelBooking
 
         private void ReservationList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            new CheckOutWindow(dac).ShowDialog();
+            new CheckOutWindow(dac, (Booking)reservationList.SelectedItem).ShowDialog();
         }
 
        
