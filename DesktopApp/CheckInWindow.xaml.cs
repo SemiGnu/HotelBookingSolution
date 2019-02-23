@@ -47,7 +47,7 @@ namespace DesktopApp
                 userFullName = CustomerNameTextBox.Text;
                 Customer c = dac.Customer.Where(cu => cu.Name == userFullName).FirstOrDefault<Customer>();
                 checkInDate = DateTime.Parse(CheckInDateBox.Text);
-                Room room = dac.Room.Where(ro => ro.NumberOfBeds == numberOfBeds).FirstOrDefault<Room>();
+                Room room = dac.Room.Where(ro => ro.NumberOfBeds == numberOfBeds && !ro.Booked).FirstOrDefault<Room>();
                     
                 checkOutdate = DateTime.Parse(CheckOutDateBox.Text);
                 Booking booking = new Booking//(2, username, numberOfBeds, checkInDate, checkOutdate)
@@ -60,6 +60,7 @@ namespace DesktopApp
                 };
 
                 dac.Booking.Add(booking);
+                room.Booked = true;
                 dac.SaveChanges();
                 this.Close();
 

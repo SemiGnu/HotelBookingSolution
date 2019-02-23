@@ -139,10 +139,10 @@ namespace HotelBooking
 
         private void ReservationList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            new CheckOutWindow(dac).ShowDialog();
+            new CheckOutWindow(dac, (Booking)reservationList.SelectedItem).ShowDialog();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void CheckOutButton_Click(object sender, RoutedEventArgs e)
         {
             new CheckOutWindow(dac).ShowDialog();
         }

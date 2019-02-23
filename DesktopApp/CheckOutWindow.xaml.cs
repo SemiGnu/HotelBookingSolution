@@ -28,7 +28,12 @@ namespace DesktopApp
 
         public CheckOutWindow(DesktopAppConfig dac)
         {
+            this.dac = dac;
+        }
 
+        public CheckOutWindow(DesktopAppConfig dac, Booking booking)
+        {
+            this.dac = dac;
         }
     }
 }
