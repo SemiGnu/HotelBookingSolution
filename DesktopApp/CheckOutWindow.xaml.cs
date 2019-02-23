@@ -44,7 +44,7 @@ namespace DesktopApp
                 userFullName = CustomerNameTextBox.Text;
                 roomNr = int.Parse(RoomNumberTextBox.Text);
                 Customer c = dac.Customer.Where(cu => cu.Name == userFullName).FirstOrDefault<Customer>();
-                Booking b = dac.Booking.Where(bo => bo.Customer.Username == c.Username).FirstOrDefault<Booking>();
+                Booking b = dac.Booking.Where(bo => bo.Customer.Username == c.Username && bo.RoomId == roomNr).FirstOrDefault<Booking>();
 
                 dac.Booking.Remove(b);
                 dac.SaveChanges();
