@@ -15,10 +15,10 @@
         <Button x:Name="CancelCheckOutButton" Content="Cancel" HorizontalAlignment="Left" Margin="596,41,0,0" VerticalAlignment="Top" Width="75" Click="CancelCheckOutButton_Click"/>
         <TextBox x:Name="RoomNumberTextBox" HorizontalAlignment="Left" Height="23" Margin="235,42,0,0" TextWrapping="Wrap" Text="Room Number" VerticalAlignment="Top" Width="120"/>
         
-        <ListView ItemsSource="{Binding}" Name="ReservationListView" Margin="10,70,10,10" >
+        <ListView ItemsSource="{Binding}" Name="ReservationListView" Margin="10,70,10,10" MouseDoubleClick="SelectCustomer_DoubleClick" >
             <ListView.View>
                 <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=Booking.CustomerUsername}" Header="Customer" Width="150"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=CustomerUsername}" Header="Customer" Width="150"></GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=RoomId}" Header="Room number" Width="100"></GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=CheckInDate}" Header="Check in date" Width="150"></GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=CheckOutDate}" Header="Check out date" Width="150"></GridViewColumn>
