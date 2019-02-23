@@ -1,6 +1,7 @@
 ﻿using DatabaseModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,16 +22,21 @@ namespace DesktopApp
     public partial class CheckOutWindow : Window
     {
         dat154_19_2Entities dac;
+        private DbSet<Booking> booking;
 
         public CheckOutWindow()
         {
+
             InitializeComponent();
         }
 
         public CheckOutWindow(dat154_19_2Entities dac)
         {
+            booking = dac.Booking;
             this.dac = dac;
             InitializeComponent();
+            booking.Load();
+            ReservationListView.DataContext = booking.Local;
 
         }
 
@@ -38,6 +44,7 @@ namespace DesktopApp
         {
             string userFullName;
             int roomNr;
+
 
             try
             {
@@ -48,6 +55,7 @@ namespace DesktopApp
 
                 dac.Booking.Remove(b);
                 dac.SaveChanges();
+                CustomerNameTextBox.Text = RoomNumberTextBox.Text = "";
 
 
             } catch (Exception exc)
@@ -63,6 +71,16 @@ namespace DesktopApp
         private void CancelCheckOutButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void SelectCustomer_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Booking selectedBooking = (Booking) ReservationListView.SelectedItem;
+            RoomNumberTextBox.Text = selectedBooking.RoomId.ToString();
+
+            CustomerNameTextBox.Text = dac.Customer.Where(cu => cu.Username == selectedBooking.CustomerUsername).FirstOrDefault<Customer>().Name;
+
+
         }
     }
 }
