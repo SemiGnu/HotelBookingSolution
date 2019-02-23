@@ -64,31 +64,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Booking.cs">
-      <DependentUpon>DesktopAppModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="CheckInWindow.xaml.cs">
       <DependentUpon>CheckInWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="CheckOutWindow.xaml.cs">
       <DependentUpon>CheckOutWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Customer.cs">
-      <DependentUpon>DesktopAppModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopAppModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DesktopAppModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="ErrorWindow.xaml.cs">
       <DependentUpon>ErrorWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Room.cs">
-      <DependentUpon>DesktopAppModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Task.cs">
-      <DependentUpon>DesktopAppModel.tt</DependentUpon>
     </Compile>
     <Page Include="CheckInWindow.xaml">
       <SubType>Designer</SubType>
@@ -109,16 +92,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DesktopAppModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DesktopAppModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopAppModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DesktopAppModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -143,13 +116,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EntityDeploy Include="DesktopAppModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DesktopAppModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="DesktopAppModel.edmx.diagram">
-      <DependentUpon>DesktopAppModel.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -160,19 +126,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DesktopAppModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DesktopAppModel.edmx</DependentUpon>
-      <LastGenOutput>DesktopAppModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="DesktopAppModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DesktopAppModel.edmx</DependentUpon>
-      <LastGenOutput>DesktopAppModel.cs</LastGenOutput>
-    </Content>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <ProjectReference Include="..\DatabaseModel\DatabaseModel.csproj">
+      <Project>{07091922-1c18-498f-bf5b-52329e18964d}</Project>
+      <Name>DatabaseModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

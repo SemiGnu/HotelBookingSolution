@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.Entity;
+using DatabaseModel;
 
 namespace DesktopApp
 {
@@ -20,19 +21,19 @@ namespace DesktopApp
     /// </summary>
     public partial class CheckInWindow : Window
     {
-        DesktopAppConfig dac;
+        dat154_19_2Entities dac;
         public CheckInWindow()
         {
             InitializeComponent();
         }
 
-        public CheckInWindow(DesktopAppConfig dac)
+        public CheckInWindow(dat154_19_2Entities dac)
         {
             InitializeComponent();
             this.dac = dac;
 
         }
-        
+
 
         private void AddBooking_Click(object sender, RoutedEventArgs e)
         {
@@ -40,16 +41,16 @@ namespace DesktopApp
             int numberOfBeds;
             DateTime checkInDate;
             DateTime checkOutdate;
-            
+
             try
             {
                 numberOfBeds = int.Parse(NumberOfBedsTextBox.Text);
                 userFullName = CustomerNameTextBox.Text;
                 Customer c = dac.Customer.Where(cu => cu.Name == userFullName).FirstOrDefault<Customer>();
                 checkInDate = DateTime.Parse(CheckInDateBox.Text);
-                Room room = dac.Room.Where(ro => ro.NumberOfBeds == numberOfBeds && !ro.Booked).FirstOrDefault<Room>();
-                    
-                checkOutdate = DateTime.Parse(CheckOutDateBox.Text);
+                Room room = dac.Room.Where(ro => ro.NumberOfBeds == numberOfBeds).FirstOrDefault<Room>();
+
+                checkOutdate = DateTime.Parse(CheckOutDateBox.Text); 
                 Booking booking = new Booking//(2, username, numberOfBeds, checkInDate, checkOutdate)
                 {
 
@@ -60,17 +61,17 @@ namespace DesktopApp
                 };
 
                 dac.Booking.Add(booking);
-                room.Booked = true;
                 dac.SaveChanges();
                 this.Close();
 
-            } catch (FormatException ex) 
+            }
+            catch (FormatException ex)
             {
                 Console.WriteLine(ex);
                 MessageBox.Show("Check your input");
 
             }
-           
+
         }
 
         private void CancelCheckIn_Click(object sender, RoutedEventArgs e)

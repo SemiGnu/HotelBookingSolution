@@ -144,6 +144,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BookingController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ServiceTasksController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -186,6 +187,7 @@
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Booking.cshtml" />
+    <Content Include="Views\Home\LogInAction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -206,9 +208,9 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DesktopApp\DesktopApp.csproj">
-      <Project>{4c4c45b3-854b-43ac-9563-91e44b364c2c}</Project>
-      <Name>DesktopApp</Name>
+    <ProjectReference Include="..\DatabaseModel\DatabaseModel.csproj">
+      <Project>{07091922-1c18-498f-bf5b-52329e18964d}</Project>
+      <Name>DatabaseModel</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

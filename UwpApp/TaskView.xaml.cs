@@ -13,22 +13,37 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace UwpApp
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class TaskView : Page
     {
-        public MainPage()
+      
+        public TaskView()
         {
-            
             this.InitializeComponent();
-
         }
 
        
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            typeOfService.Text = e.Parameter.ToString();
+            base.OnNavigatedTo(e);
+        }
+
+
+        private void Add_Task(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ReturnToSelection(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(SelectionView));
+        }
     }
 }
