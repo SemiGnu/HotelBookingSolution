@@ -40,6 +40,21 @@ namespace DesktopApp
 
         }
 
+        public CheckOutWindow(dat154_19_2Entities dac, Booking bookingElement)
+        {
+            booking = dac.Booking;
+            this.dac = dac;
+            InitializeComponent();
+            booking.Load();
+            ReservationListView.DataContext = booking.Local;
+
+            RoomNumberTextBox.Text = bookingElement.RoomId.ToString();
+
+            CustomerNameTextBox.Text = dac.Customer.Where(cu => cu.Username == bookingElement.CustomerUsername).FirstOrDefault<Customer>().Name;
+
+
+        }
+
         private void CheckOutCustomer_Click(object sender, RoutedEventArgs e)
         {
             string userFullName;
