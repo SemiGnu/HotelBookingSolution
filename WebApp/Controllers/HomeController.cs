@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
@@ -74,26 +75,39 @@ namespace WebApp.Controllers
          
         }
 
-        public ActionResult RegisterAction()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RegisterAction([Bind(Include = "username,fullName,password")] Customer customer)
         {
-            FormCollection collect = new FormCollection();
-            username = Request.Form["usernameReg"];
-            fullName = Request.Form["fullNameReg"]; 
-            password = Request.Form["passwordReg"];
-
-            ViewBag.Message = "Username: " + username + ", Password:   " + password;
-
-            Customer customer = new Customer()
+            if (ModelState.IsValid)
             {
-                Username = username,
-                Name = fullName,
-                Password = password
-            };
+                db.Customer.Add(customer);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
 
-            db.Customer.Add(customer);
 
-            return View();
-           
+            }
+
+            return View(customer);
+
+            // FormCollection collect = new FormCollection();
+            //username = Request.Form["usernameReg"];
+            //fullName = Request.Form["fullNameReg"]; 
+            //password = Request.Form["passwordReg"];
+
+            //ViewBag.Message = "Username: " + username + ", Password:   " + password;
+
+            //Customer customer = new Customer()
+            //{
+            //  Username = username,
+            // Name = fullName,
+            //Password = password
+            //};
+
+            //db.Customer.Add(customer);
+
+            //return View();
+
 
         }
 
