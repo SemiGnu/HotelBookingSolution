@@ -33,9 +33,9 @@
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" MinWidth="80"/>
+                            <ColumnDefinition Width="*" MinWidth="80" />
+                            <ColumnDefinition Width="*" MinWidth="80" />
                             <ColumnDefinition Width="6*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Room" FontWeight="Bold" Grid.Column="0"/>
@@ -54,9 +54,9 @@
                 <DataTemplate x:DataType="local:ServiceTask">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*"  MinWidth="80"/>
+                            <ColumnDefinition Width="*"  MinWidth="80"/>
+                            <ColumnDefinition Width="*"  MinWidth="80"/>
                             <ColumnDefinition Width="6*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding Room.RoomNumber}" Grid.Column="0" />
@@ -79,13 +79,29 @@
             </ListView.ItemContainerStyle>
 
         </ListView>
-        <Button Content="Add Task" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Margin="10,10,10,10" Grid.Row="2" Grid.Column="2" />
-
-
-        <!--<Button Content="Button" HorizontalAlignment="Left" Margin="90,42,0,0" VerticalAlignment="Top" Width="100" Grid.Column="4" Height="32" Click="Add_Task"/>-->
-        <TextBlock x:Name="typeOfService" Text="Service type goes here" HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="1"/>
-        <Button Content="Service Selection" Click="ReturnToSelection" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,10" Grid.Row="1" Grid.Column="2" />
-
+        <TextBlock x:Name="typeOfService" FontSize="24" FontWeight="Bold" Text="Service type goes here" HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="1"/>
+        <Button Content="Service Selection" Background="CadetBlue" Click="ReturnToSelection" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,10" Grid.Row="1" Grid.Column="2" />
+        <Button Name="AddTaskButton" Content="Add Task" Background="LightGreen" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Margin="10,10,10,10" Grid.Row="2" Grid.Column="2" Click="AddTaskButton_Click" />
+        
+        <Grid Name="TaskEntryGrid" Grid.Column="2" Grid.Row="3" Margin="10" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="100" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Text="Room:" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom"/>
+            <TextBox Name="TaskEntryRoomNumber" Margin="5" Padding="1" Grid.Column="1" Grid.Row="0" />
+            <TextBlock Text="Description:" Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" />
+            <TextBox Name="TaskEntryDescription" Margin="5" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" />
+            <Button Name="TaskEntryOk" Background="LightGreen" Content="Ok" Grid.Column="0" Grid.Row="3" Margin="0" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="TaskEntryOk_Click"/>
+            <Button Name="TaskEntryClear" Background="PaleVioletRed" Content="Clear" Grid.Column="1" Grid.Row="3" Margin="0" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="TaskEntryClear_Click"/>
+        </Grid>
 
     </Grid>
 </Page>

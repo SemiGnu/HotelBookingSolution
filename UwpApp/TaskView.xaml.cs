@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -28,7 +29,7 @@ namespace UwpApp
     {
         private List<ServiceTask> serviceTaskList = new List<ServiceTask>();
         private string CurrentServiceType;
-        
+
 
         public TaskView()
         {
@@ -36,14 +37,14 @@ namespace UwpApp
             UpdateServiceTaskList();
         }
 
-       
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             CurrentServiceType = e.Parameter.ToString();
             typeOfService.Text = CurrentServiceType;
             TaskListView.ItemsSource = serviceTaskList.Where(stask => stask.TypeOfService == CurrentServiceType).OrderBy(stask => stask.TimeIssued);
             base.OnNavigatedTo(e);
-        } 
+        }
 
         // henter servicetasks fra db -t
         private void UpdateServiceTaskList()
@@ -85,6 +86,68 @@ namespace UwpApp
         private void ReturnToSelection(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(SelectionView));
+        }
+
+        private void AddTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            switch (TaskEntryGrid.Visibility)
+            {
+                case Visibility.Visible:
+                    TaskEntryGrid.Visibility = Visibility.Collapsed;
+                    break;
+                case Visibility.Collapsed:
+                    TaskEntryGrid.Visibility = Visibility.Visible;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void TaskEntryClear_Click(object sender, RoutedEventArgs e)
+        {
+            TaskEntryDescription.Text = "";
+            TaskEntryRoomNumber.Text = "";
+        }
+
+        private void TaskEntryOk_Click(object sender, RoutedEventArgs e)
+        {
+            List<Room> rooms;
+            using (var client = new HttpClient())
+            {
+                var response = "";
+                Task task = Task.Run(async () =>
+                {
+                    response = await client.GetStringAsync(new Uri("http://localhost:52285/api/Rooms"));
+                });
+                task.Wait();
+                rooms = JsonConvert.DeserializeObject<List<Room>>(response);
+            }
+            Int32.TryParse(TaskEntryRoomNumber.Text, out int roomNo);
+            int roomId = rooms.Where(room => room.RoomNumber == roomNo).First<Room>().RoomId;
+
+            ServiceTask st = new ServiceTask
+            {
+                TypeOfService = CurrentServiceType,
+                Status = "Pending",
+                TimeIssued = DateTime.Now,
+                TimeCompleted = null,
+                RoomId = roomId,
+                Description = TaskEntryDescription.Text
+            };
+
+            var newServiceTask = JsonConvert.SerializeObject(st);
+            var buffer = System.Text.Encoding.UTF8.GetBytes(newServiceTask);
+            var byteContent = new ByteArrayContent(buffer);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            using (var client = new HttpClient())
+            {
+                Task task = Task.Run(async () =>
+                {
+                    await client.PostAsync(new Uri("http://localhost:52285/api/ServiceTasks"), byteContent);
+                });
+                task.Wait();
+            }
         }
     }
 }
