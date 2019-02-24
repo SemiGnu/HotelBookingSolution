@@ -7,6 +7,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <ResourceDictionary>
+            <local:DateTimeToStringConverter
+                x:Name="ListViewTimeConverter"
+                Format="dd/mm HH:mm" />
+        </ResourceDictionary>
+    </Page.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -29,9 +36,9 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="6*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Room Number" FontWeight="Bold" Grid.Column="0"/>
+                        <TextBlock Text="Room" FontWeight="Bold" Grid.Column="0"/>
                         <TextBlock Text="Status" FontWeight="Bold" Grid.Column="1"/>
                         <TextBlock Text="Time Issued" FontWeight="Bold" Grid.Column="2"/>
                         <TextBlock Text="Description" FontWeight="Bold" Grid.Column="3"/>
@@ -44,17 +51,17 @@
                 </DataTemplate>
             </ListView.HeaderTemplate>
             <ListView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="local:ServiceTask">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="6*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding Room.RoomNumber}" Grid.Column="0" />
                         <TextBlock Text="{Binding Status}" Grid.Column="1" />
-                        <TextBlock Text="{Binding TimeIssued}" Grid.Column="2" />
+                        <TextBlock Text="{x:Bind TimeIssued, Converter={StaticResource ListViewTimeConverter}}"  Grid.Column="2" />
                         <TextBlock Text="{Binding Description}" Grid.Column="3" />
                     </Grid>
                     <!--<StackPanel Orientation="Horizontal">
@@ -67,6 +74,7 @@
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Margin" Value="-10,0,0,0" />
                 </Style>
             </ListView.ItemContainerStyle>
 

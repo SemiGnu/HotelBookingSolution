@@ -21,9 +21,9 @@
             <RowDefinition Height="10*" />
             <RowDefinition Height="10*" />
         </Grid.RowDefinitions>
-        <Button Name="Cleaning" Content="Cleaner" Background="LightPink" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,10"  Click="Selection_Click" Grid.Column="1" Grid.Row="1"/>
-        <Button Name="Maintenance" Content="Maintenance" Background="Bisque" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,10"  Click="Selection_Click" Grid.Column="1" Grid.Row="2"/>
-        <Button Name="Service" Content="Service" Background="LimeGreen" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Margin="10,10,10,10" Click="Selection_Click" Grid.Column="1" Grid.Row="3"/>
+        <Button Name="Cleaning" Content="Cleaning" Background="LightPink" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,10"  Click="Selection_Click" Grid.Column="1" Grid.Row="1"/>
+        <Button Name="Maintenance" Content="Maintainance" Background="Bisque" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,10"  Click="Selection_Click" Grid.Column="1" Grid.Row="2"/>
+        <Button Name="Room_Service" Content="Room Service" Background="LimeGreen" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Margin="10,10,10,10" Click="Selection_Click" Grid.Column="1" Grid.Row="3"/>
 
     </Grid>
 </Page>

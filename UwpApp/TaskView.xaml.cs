@@ -8,6 +8,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Globalization.DateTimeFormatting;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -25,23 +26,41 @@ namespace UwpApp
     /// </summary>
     public sealed partial class TaskView : Page
     {
-      
+        private List<ServiceTask> serviceTaskList = new List<ServiceTask>();
+        private string CurrentServiceType;
+        
+
         public TaskView()
         {
             this.InitializeComponent();
+            UpdateServiceTaskList();
+        }
 
+       
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            CurrentServiceType = e.Parameter.ToString();
+            typeOfService.Text = CurrentServiceType;
+            TaskListView.ItemsSource = serviceTaskList.Where(stask => stask.TypeOfService == CurrentServiceType).OrderBy(stask => stask.TimeIssued);
+            base.OnNavigatedTo(e);
+        } 
+
+        // henter servicetasks fra db -t
+        private void UpdateServiceTaskList()
+        {
             using (var client = new HttpClient())
             {
+                //først tasks -t
                 var response = "";
                 Task task = Task.Run(async () =>
                 {
                     response = await client.GetStringAsync(new Uri("http://localhost:52285/api/ServiceTasks"));
                 });
                 task.Wait();
-                List<ServiceTask> serviceTaskList = JsonConvert.DeserializeObject<List<ServiceTask>>(response);
+                serviceTaskList = JsonConvert.DeserializeObject<List<ServiceTask>>(response);
 
+                //så en roomnumbers fra roomid -t
                 List<Task> roomNumberTaskList = new List<Task>();
-                
                 foreach (ServiceTask serviceTask in serviceTaskList)
                 {
                     roomNumberTaskList.Add(Task.Run(async () =>
@@ -53,15 +72,8 @@ namespace UwpApp
                 }
                 Task.WaitAll(roomNumberTaskList.ToArray());
 
-                TaskListView.ItemsSource = serviceTaskList;
+                TaskListView.ItemsSource = serviceTaskList.Where(stask => stask.TypeOfService == typeOfService.Text);
             }
-        }
-
-       
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            typeOfService.Text = e.Parameter.ToString();
-            base.OnNavigatedTo(e);
         }
 
 
