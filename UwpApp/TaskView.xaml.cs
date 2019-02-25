@@ -77,30 +77,9 @@ namespace UwpApp
             }
         }
 
-
-        private void Add_Task(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void ReturnToSelection(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(SelectionView));
-        }
-
-        private void AddTaskButton_Click(object sender, RoutedEventArgs e)
-        {
-            switch (TaskEntryGrid.Visibility)
-            {
-                case Visibility.Visible:
-                    TaskEntryGrid.Visibility = Visibility.Collapsed;
-                    break;
-                case Visibility.Collapsed:
-                    TaskEntryGrid.Visibility = Visibility.Visible;
-                    break;
-                default:
-                    break;
-            }
         }
 
         private void TaskEntryClear_Click(object sender, RoutedEventArgs e)
@@ -147,6 +126,73 @@ namespace UwpApp
                     await client.PostAsync(new Uri("http://localhost:52285/api/ServiceTasks"), byteContent);
                 });
                 task.Wait();
+            }
+            UpdateServiceTaskList();
+        }
+
+        private void CompleteTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (TaskListView.SelectedItem != null)
+            {
+                ServiceTask st = TaskListView.SelectedItem as ServiceTask;
+                st.Status = "Completed";
+
+                var newServiceTask = JsonConvert.SerializeObject(st);
+                var buffer = System.Text.Encoding.UTF8.GetBytes(newServiceTask);
+                var byteContent = new ByteArrayContent(buffer);
+                byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                using (var client = new HttpClient())
+                {
+                    Task task = Task.Run(async () =>
+                    {
+                        await client.PutAsync(new Uri(String.Format("http://localhost:52285/api/ServiceTasks/{0}", st.TaskId)), byteContent);
+                    });
+                    task.Wait();
+                }
+                UpdateServiceTaskList(); 
+            }
+        }
+
+        private void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (TaskListView.SelectedItem != null)
+            {
+                ServiceTask st = TaskListView.SelectedItem as ServiceTask;
+
+                using (var client = new HttpClient())
+                {
+                    Task task = Task.Run(async () =>
+                    {
+                        await client.DeleteAsync(new Uri(String.Format("http://localhost:52285/api/ServiceTasks/{0}", st.TaskId)));
+                    });
+                    task.Wait();
+                }
+                UpdateServiceTaskList(); 
+            }
+        }
+
+        private void BeginTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (TaskListView.SelectedItem != null)
+            {
+                ServiceTask st = TaskListView.SelectedItem as ServiceTask;
+                st.Status = "In Progress";
+
+                var newServiceTask = JsonConvert.SerializeObject(st);
+                var buffer = System.Text.Encoding.UTF8.GetBytes(newServiceTask);
+                var byteContent = new ByteArrayContent(buffer);
+                byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                using (var client = new HttpClient())
+                {
+                    Task task = Task.Run(async () =>
+                    {
+                        await client.PutAsync(new Uri(String.Format("http://localhost:52285/api/ServiceTasks/{0}", st.TaskId)), byteContent);
+                    });
+                    task.Wait();
+                }
+                UpdateServiceTaskList(); 
             }
         }
     }
