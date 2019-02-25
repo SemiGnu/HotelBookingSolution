@@ -1,6 +1,8 @@
-﻿    using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 
@@ -26,6 +28,10 @@ namespace WebApp.App_Start
             var formatter = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
             formatter.SerializerSettings.ContractResolver =
                 new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
+            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+            //GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+
+
         }
     }
 }

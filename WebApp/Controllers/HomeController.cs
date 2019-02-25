@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using DatabaseModel;
+using System.Web.Http;
 
 
 namespace WebApp.Controllers
@@ -15,7 +17,6 @@ namespace WebApp.Controllers
         private string username;
         private string password;
         private string fullName; 
-        bool loggedIn = false;
 
         public void SaveData(FormCollection fomr)
         {
@@ -23,6 +24,8 @@ namespace WebApp.Controllers
             password = Request.Form["surname"]; 
 
         }
+
+        bool loggedIn = false;
 
         public ActionResult Index()
         {
@@ -73,27 +76,24 @@ namespace WebApp.Controllers
          
         }
 
-        public ActionResult RegisterAction()
+        [System.Web.Mvc.HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> PostCusomerTask([Bind(Include = "Username,Name,Password")] Customer customer)
         {
-            FormCollection collect = new FormCollection();
-            username = Request.Form["usernameReg"];
-            fullName = Request.Form["fullNameReg"]; 
-            password = Request.Form["passwordReg"];
-
-            ViewBag.Message = "Username: " + username + ", Password:   " + password;
-
-            Customer customer = new Customer()
+            if (ModelState.IsValid)
             {
-                Username = username,
-                Name = fullName,
-                Password = password
-            };
+                db.Customer.Add(customer);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
 
-            db.Customer.Add(customer);
-            db.SaveChanges();
+
+            }
+            
 
             return View();
-           
+
+          
+
 
         }
 
