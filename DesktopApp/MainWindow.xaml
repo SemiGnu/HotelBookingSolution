@@ -10,10 +10,6 @@
 
     <Grid Background="Gray">
         <TabControl>
-            <TabItem Header="Checkin/Checkout">
-                <Grid Background="#FFE5E5E5"/>
-            </TabItem>
-
             <!--
             Reservation
             -->
