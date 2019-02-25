@@ -80,6 +80,30 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> PostCusomerTask([Bind(Include = "Username,Name,Password")] Customer customer)
         {
+            
+            FormCollection collect = new FormCollection();
+            username = Request.Form["usernameReg"];
+            fullName = Request.Form["fullNameReg"]; 
+            password = Request.Form["passwordReg"];
+            if (db.Customer.Any(u => u.Username == username))
+            {
+                ViewBag.Message = "This username is not available";
+                return Register(); 
+            }
+            else
+            {
+                Customer customer = new Customer()
+                {
+                    Username = username,
+                    Name = fullName,
+                    Password = password
+                };
+
+                db.Customer.Add(customer);
+                ViewBag.Message = "Successfully created new user";
+                return Login();
+            }
+
             if (ModelState.IsValid)
             {
                 db.Customer.Add(customer);
