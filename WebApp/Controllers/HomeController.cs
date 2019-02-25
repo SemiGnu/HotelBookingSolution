@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using DatabaseModel;
+using System.Web.Http;
 
 
 namespace WebApp.Controllers
@@ -75,9 +76,9 @@ namespace WebApp.Controllers
          
         }
 
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> RegisterAction([Bind(Include = "username,fullName,password")] Customer customer)
+        public async Task<ActionResult> PostCusomerTask([Bind(Include = "Username,Name,Password")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -87,26 +88,11 @@ namespace WebApp.Controllers
 
 
             }
+            
 
-            return View(customer);
+            return View();
 
-            // FormCollection collect = new FormCollection();
-            //username = Request.Form["usernameReg"];
-            //fullName = Request.Form["fullNameReg"]; 
-            //password = Request.Form["passwordReg"];
-
-            //ViewBag.Message = "Username: " + username + ", Password:   " + password;
-
-            //Customer customer = new Customer()
-            //{
-            //  Username = username,
-            // Name = fullName,
-            //Password = password
-            //};
-
-            //db.Customer.Add(customer);
-
-            //return View();
+          
 
 
         }
