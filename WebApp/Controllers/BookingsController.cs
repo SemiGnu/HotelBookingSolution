@@ -10,6 +10,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using DatabaseModel;
 
 namespace WebApp.Controllers
@@ -117,13 +119,7 @@ namespace WebApp.Controllers
             return db.Booking.Count(e => e.BookingId == id) > 0;
         }
 
-        public ActionResult Booking()
-        { 
-            dynamic model = new ExpandoObject();
-            model.Room = db.Room;
-            model.Booking = db.Booking; 
-            return View();
-            }
-        }
+        
+        
     }
 }
