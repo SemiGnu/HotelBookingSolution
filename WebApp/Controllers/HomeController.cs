@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using DatabaseModel;
+using System.Web.Http;
 
 
 namespace WebApp.Controllers
@@ -74,7 +76,9 @@ namespace WebApp.Controllers
          
         }
 
-        public ActionResult RegisterAction()
+        [System.Web.Mvc.HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> PostCusomerTask([Bind(Include = "Username,Name,Password")] Customer customer)
         {
             
             FormCollection collect = new FormCollection();
@@ -99,6 +103,21 @@ namespace WebApp.Controllers
                 ViewBag.Message = "Successfully created new user";
                 return Login();
             }
+
+            if (ModelState.IsValid)
+            {
+                db.Customer.Add(customer);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
+
+
+            }
+            
+
+            return View();
+
+          
+
 
         }
 
