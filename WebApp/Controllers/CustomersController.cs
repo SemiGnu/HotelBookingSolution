@@ -133,10 +133,5 @@ namespace WebApp.Controllers
             return db.Customer.Count(e => e.Username == id) > 0;
         }
 
-        //public ActionResult Register()
-        //{
-        //    return RedirectToRoute("Register", );
-        //}
-
     }
 }

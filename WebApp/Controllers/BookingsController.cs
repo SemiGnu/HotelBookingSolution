@@ -10,6 +10,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using DatabaseModel;
 
 namespace WebApp.Controllers
@@ -118,12 +120,11 @@ namespace WebApp.Controllers
         }
 
         public ActionResult Booking()
-        { 
+        {
             dynamic model = new ExpandoObject();
             model.Room = db.Room;
-            model.Booking = db.Booking; 
-            return View();
-            }
+            model.Booking = db.Booking;
+            return View("~/Views/Booking/Booking.cshtml");
         }
     }
-}
+    }
