@@ -103,17 +103,16 @@ namespace UwpApp
             }
             
             Int32.TryParse(TaskEntryRoomNumber.Text, out int roomNo);
-            int roomId = rooms.Where(room => room.RoomNumber == roomNo).First<Room>().RoomId;
-
-            if (roomId != 0)
+            try
             {
+                Room foundRoom = rooms.Where(room => room.RoomNumber == roomNo).First<Room>();
                 ServiceTask st = new ServiceTask
                 {
                     TypeOfService = CurrentServiceType,
                     Status = "Pending",
                     TimeIssued = DateTime.Now,
                     TimeCompleted = null,
-                    RoomId = roomId,
+                    RoomId = foundRoom.RoomId,
                     Description = TaskEntryDescription.Text
                 };
 
@@ -130,10 +129,14 @@ namespace UwpApp
                     });
                     task.Wait();
                 }
-                UpdateServiceTaskList(); 
+                UpdateServiceTaskList();
+                TaskEntryDescription.Text = "";
+                TaskEntryRoomNumber.Text = "";
+            } catch (Exception ex)
+            {
+
             }
-            TaskEntryDescription.Text = "";
-            TaskEntryRoomNumber.Text = "";
+
         }
 
         private void CompleteTaskButton_Click(object sender, RoutedEventArgs e)
