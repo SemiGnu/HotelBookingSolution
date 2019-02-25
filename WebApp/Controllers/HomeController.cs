@@ -15,6 +15,7 @@ namespace WebApp.Controllers
         private string username;
         private string password;
         private string fullName; 
+        bool loggedIn = false;
 
         public void SaveData(FormCollection fomr)
         {
@@ -22,8 +23,6 @@ namespace WebApp.Controllers
             password = Request.Form["surname"]; 
 
         }
-
-        bool loggedIn = false;
 
         public ActionResult Index()
         {
@@ -91,6 +90,7 @@ namespace WebApp.Controllers
             };
 
             db.Customer.Add(customer);
+            db.SaveChanges();
 
             return View();
            
