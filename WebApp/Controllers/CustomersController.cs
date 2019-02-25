@@ -30,7 +30,7 @@ namespace WebApp.Controllers
             Customer customer = await db.Customer.FindAsync(id);
             if (customer == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
 
             return Ok(customer);
