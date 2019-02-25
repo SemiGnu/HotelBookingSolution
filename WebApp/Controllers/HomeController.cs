@@ -76,24 +76,29 @@ namespace WebApp.Controllers
 
         public ActionResult RegisterAction()
         {
+            
             FormCollection collect = new FormCollection();
             username = Request.Form["usernameReg"];
             fullName = Request.Form["fullNameReg"]; 
             password = Request.Form["passwordReg"];
-
-            ViewBag.Message = "Username: " + username + ", Password:   " + password;
-
-            Customer customer = new Customer()
+            if (db.Customer.Any(u => u.Username == username))
             {
-                Username = username,
-                Name = fullName,
-                Password = password
-            };
+                ViewBag.Message = "This username is not available";
+                return Register(); 
+            }
+            else
+            {
+                Customer customer = new Customer()
+                {
+                    Username = username,
+                    Name = fullName,
+                    Password = password
+                };
 
-            db.Customer.Add(customer);
-
-            return View();
-           
+                db.Customer.Add(customer);
+                ViewBag.Message = "Successfully created new user";
+                return Login();
+            }
 
         }
 
