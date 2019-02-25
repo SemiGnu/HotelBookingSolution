@@ -9,7 +9,8 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <Grid Background="Gray">
-        <TabControl>            <!--
+        <TabControl>
+            <!--
             Reservation
             -->
             <TabItem Header="Reservations">
