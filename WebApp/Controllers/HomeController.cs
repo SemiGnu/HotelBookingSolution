@@ -45,19 +45,7 @@ namespace WebApp.Controllers
 
             return View();
         }
-        public ActionResult Booking()
-        {
-            if (loggedIn)
-            {
-                return View(); 
-            }
-            else
-            {
-                ViewBag.Message = "Wrong name or password";
-                return Login();
-                
-            }
-        }
+        
         public ActionResult LogInAction()
         {
             FormCollection collect = new FormCollection();

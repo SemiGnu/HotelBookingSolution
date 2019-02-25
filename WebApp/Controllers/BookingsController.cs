@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -114,6 +115,15 @@ namespace WebApp.Controllers
         private bool BookingExists(int id)
         {
             return db.Booking.Count(e => e.BookingId == id) > 0;
+        }
+
+        public ActionResult Booking()
+        { 
+            dynamic model = new ExpandoObject();
+            model.Room = db.Room;
+            model.Booking = db.Booking; 
+            return View();
+            }
         }
     }
 }
