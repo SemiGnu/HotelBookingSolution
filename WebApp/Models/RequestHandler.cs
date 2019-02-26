@@ -17,15 +17,8 @@ namespace WebApp.Models
             {
                 dat154_19_2Entities db = new dat154_19_2Entities();
 
-                var bestRoom = db.Room.Where(r => r.NumberOfBeds >= rr.NumberOfBeds)
-                    .Join(db.Booking,
-                    r => r.RoomId,
-                    b => b.RoomId,
-                    (r, b) => new { R = r, B = b })
-                    .Where(rb => rb.B.CheckOutDate <= rr.CheckInDate || rb.B.CheckInDate >= rr.CheckOutDate)
-                    .OrderBy(rb => rb.R.NumberOfBeds)
-                    .Select(rb => rb.R)
-                    .FirstOrDefault();
+                var bookedRoomIds = db.Booking.Where(bo => !(bo.CheckOutDate.CompareTo(rr.CheckInDate) < 0 || bo.CheckInDate.CompareTo(rr.CheckOutDate) > 0)).Select(bo => bo.RoomId);
+                var bestRoom = db.Room.Where(rm => rm.NumberOfBeds >= rr.NumberOfBeds).Where(rm => !bookedRoomIds.Contains(rm.RoomId)).OrderBy(rm => rm.NumberOfBeds).FirstOrDefault();
 
                 if (bestRoom != null)
                 {

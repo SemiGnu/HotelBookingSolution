@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using DatabaseModel;
+using WebApp.Models;
 
 namespace WebApp.Controllers
 {
@@ -45,6 +46,14 @@ namespace WebApp.Controllers
             return View();
         }
 
+        // GET: Bookings1/Create
+        public ActionResult CreateFromRequest()
+        {
+            ViewBag.CustomerUsername = new SelectList(db.Customer, "Username", "Name");
+            ViewBag.RoomId = new SelectList(db.Room, "RoomId", "RoomId");
+            return View();
+        }
+
         // POST: Bookings1/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -63,6 +72,27 @@ namespace WebApp.Controllers
             ViewBag.RoomId = new SelectList(db.Room, "RoomId", "RoomId", booking.RoomId);
             return View(booking);
         }
+
+        /// Lag en booking uten romnummer! -t
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateFromReservation([Bind(Include = "Username,NumberOfBeds,CheckInDate,CheckOutDate")] ReservationRequest reservation)
+        {
+            Booking booking = RequestHandler.HandleRequest(reservation);
+
+            if (ModelState.IsValid)
+            {
+                db.Booking.Add(booking);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.CustomerUsername = new SelectList(db.Customer, "Username", "Name", booking.CustomerUsername);
+            ViewBag.RoomId = new SelectList(db.Room, "RoomId", "RoomId", booking.RoomId);
+            return View(booking);
+        }
+
+
 
         // GET: Bookings1/Edit/5
         public async Task<ActionResult> Edit(int? id)

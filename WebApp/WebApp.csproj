@@ -237,6 +237,7 @@
     <Content Include="Views\Bookings1\Details.cshtml" />
     <Content Include="Views\Bookings1\Edit.cshtml" />
     <Content Include="Views\Bookings1\Index.cshtml" />
+    <Content Include="Views\Bookings1\CreateFromRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

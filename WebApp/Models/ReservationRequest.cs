@@ -13,6 +13,7 @@ namespace WebApp.Models
         public string Username { get; set; }
 
         public bool isValid() {
+            //if (NumberOfBeds < 1) NumberOfBeds = 3;
             return CheckInDate != null && CheckOutDate != null && NumberOfBeds > 0 && Username != null;
         }
     }
