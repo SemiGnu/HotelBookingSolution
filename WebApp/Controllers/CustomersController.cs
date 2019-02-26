@@ -101,13 +101,17 @@ namespace WebApp.Controllers
             }
 
             return CreatedAtRoute("DefaultApi", new { id = customer.Username }, customer);
+            
+           
         }
+
+
 
         // DELETE: api/Customers/5
         [ResponseType(typeof(Customer))]
         public async Task<IHttpActionResult> DeleteCustomer(string id)
         {
-            Customer customer = await db.Customer.FindAsync(id);
+            var customer = await db.Customer.FindAsync(id);
             if (customer == null)
             {
                 return NotFound();
@@ -132,6 +136,11 @@ namespace WebApp.Controllers
         {
             return db.Customer.Count(e => e.Username == id) > 0;
         }
+
+        //public void RedirectLogin(object sender, EventArgs e)
+        //{
+
+        //}
 
     }
 }

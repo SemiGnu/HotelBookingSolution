@@ -86,7 +86,8 @@ namespace WebApp.Controllers
             db.Booking.Add(booking);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = booking.BookingId }, booking);
+           return CreatedAtRoute("DefaultApi", new { id = booking.BookingId }, booking);
+           
         }
 
         // DELETE: api/Bookings/5
