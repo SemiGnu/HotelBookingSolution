@@ -78,10 +78,6 @@ namespace UwpApp
         }
 
 
-        private void Add_Task(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void ReturnToSelection(object sender, RoutedEventArgs e)
         {
