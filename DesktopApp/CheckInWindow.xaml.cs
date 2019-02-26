@@ -49,20 +49,23 @@ namespace DesktopApp
                 Customer c = dac.Customer.Where(cu => cu.Name == userFullName).FirstOrDefault<Customer>();
                 checkInDate = DateTime.Parse(CheckInDateBox.Text);
                 Room room = dac.Room.Where(ro => ro.NumberOfBeds == numberOfBeds).FirstOrDefault<Room>();
+                checkOutdate = DateTime.Parse(CheckOutDateBox.Text);
 
-                checkOutdate = DateTime.Parse(CheckOutDateBox.Text); 
-                Booking booking = new Booking//(2, username, numberOfBeds, checkInDate, checkOutdate)
+
+                if (checkDate(checkInDate, checkOutdate, room.RoomId))
                 {
+                    Booking booking = new Booking//(2, username, numberOfBeds, checkInDate, checkOutdate)
+                    {
 
-                    CustomerUsername = c.Username,
-                    RoomId = room.RoomId,
-                    CheckInDate = checkInDate,
-                    CheckOutDate = checkOutdate
-                };
-
-                dac.Booking.Add(booking);
-                dac.SaveChanges();
-                this.Close();
+                        CustomerUsername = c.Username,
+                        RoomId = room.RoomId,
+                        CheckInDate = checkInDate,
+                        CheckOutDate = checkOutdate
+                    };
+                    dac.Booking.Add(booking);
+                    dac.SaveChanges();
+                    this.Close();
+                }
 
             }
             catch (FormatException ex)
@@ -78,6 +81,38 @@ namespace DesktopApp
         {
             this.Close();
 
+        }
+
+        private bool checkDate(DateTime inDate, DateTime outDate, int roomNumber)
+        {
+            bool isAvaliable = false;
+
+            if (inDate.CompareTo(outDate) < 0) //Check if check-in date is before check-out date
+            {
+                List<Booking> bookings = dac.Booking.Where(bo => bo.RoomId == roomNumber).ToList<Booking>();
+                if (bookings.Count > 0) {
+                    foreach (Booking b in bookings)
+                    {
+
+                        if(inDate.CompareTo(b.CheckOutDate) >= 0 || outDate.CompareTo(b.CheckInDate) <= 0) //Check if date crashes with other bookings
+                        {
+                            isAvaliable = true;
+                            
+                        }
+                        else
+                        {
+                            isAvaliable = false;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    isAvaliable = true;
+                }
+            }
+
+            return isAvaliable;
         }
     }
 }
