@@ -46,11 +46,12 @@ namespace DesktopApp
             {
                 numberOfBeds = int.Parse(NumberOfBedsTextBox.Text);
                 userFullName = CustomerNameTextBox.Text;
-                Customer c = dac.Customer.Where(cu => cu.Name == userFullName).FirstOrDefault<Customer>();
                 checkInDate = DateTime.Parse(CheckInDateBox.Text);
+                checkOutdate = DateTime.Parse(CheckOutDateBox.Text);
+                Customer c = dac.Customer.Where(cu => cu.Name == userFullName).FirstOrDefault<Customer>();
+
                 List<Room> avaliableRooms = dac.Room.Where(ro => ro.NumberOfBeds >= numberOfBeds).ToList<Room>();
                 Room room = null;
-                checkOutdate = DateTime.Parse(CheckOutDateBox.Text);
 
                 foreach(Room r in avaliableRooms)
                 {
@@ -63,17 +64,29 @@ namespace DesktopApp
 
                 if (room != null)
                 {
-                    Booking booking = new Booking//(2, username, numberOfBeds, checkInDate, checkOutdate)
+                    try
                     {
+                        Booking booking = new Booking//(id(auto), username, numberOfBeds, checkInDate, checkOutdate)
+                        {
 
-                        CustomerUsername = c.Username,
-                        RoomId = room.RoomId,
-                        CheckInDate = checkInDate,
-                        CheckOutDate = checkOutdate
-                    };
-                    dac.Booking.Add(booking);
-                    dac.SaveChanges();
-                    this.Close();
+                            CustomerUsername = c.Username,
+                            RoomId = room.RoomId,
+                            CheckInDate = checkInDate,
+                            CheckOutDate = checkOutdate
+                        };
+
+                        dac.Booking.Add(booking);
+                        dac.SaveChanges();
+                        this.Close();
+                    }catch(NullReferenceException ex)
+                    {
+                        Console.WriteLine(e);
+                        MessageBox.Show("user not found");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No room found");
                 }
 
             }
