@@ -119,12 +119,6 @@ namespace WebApp.Controllers
             return db.Booking.Count(e => e.BookingId == id) > 0;
         }
 
-        public ActionResult Booking()
-        {
-            dynamic model = new ExpandoObject();
-            model.Room = db.Room;
-            model.Booking = db.Booking;
-            return View("~/Views/Booking/Booking.cshtml");
-        }
+
     }
     }
