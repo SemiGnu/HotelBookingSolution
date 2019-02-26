@@ -119,6 +119,5 @@ namespace WebApp.Controllers
             return db.Booking.Count(e => e.BookingId == id) > 0;
         }
 
-
     }
     }
