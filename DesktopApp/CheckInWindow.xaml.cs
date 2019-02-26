@@ -46,23 +46,48 @@ namespace DesktopApp
             {
                 numberOfBeds = int.Parse(NumberOfBedsTextBox.Text);
                 userFullName = CustomerNameTextBox.Text;
-                Customer c = dac.Customer.Where(cu => cu.Name == userFullName).FirstOrDefault<Customer>();
                 checkInDate = DateTime.Parse(CheckInDateBox.Text);
-                Room room = dac.Room.Where(ro => ro.NumberOfBeds == numberOfBeds).FirstOrDefault<Room>();
+                checkOutdate = DateTime.Parse(CheckOutDateBox.Text);
+                Customer c = dac.Customer.Where(cu => cu.Name == userFullName).FirstOrDefault<Customer>();
 
-                checkOutdate = DateTime.Parse(CheckOutDateBox.Text); 
-                Booking booking = new Booking//(2, username, numberOfBeds, checkInDate, checkOutdate)
+                List<Room> avaliableRooms = dac.Room.Where(ro => ro.NumberOfBeds >= numberOfBeds).ToList<Room>();
+                Room room = null;
+
+                foreach(Room r in avaliableRooms)
                 {
+                    if(checkDate(checkInDate, checkOutdate, r.RoomId))
+                    {
+                        room = r;
+                        break;
+                    }
+                }
 
-                    CustomerUsername = c.Username,
-                    RoomId = room.RoomId,
-                    CheckInDate = checkInDate,
-                    CheckOutDate = checkOutdate
-                };
+                if (room != null)
+                {
+                    try
+                    {
+                        Booking booking = new Booking//(id(auto), username, numberOfBeds, checkInDate, checkOutdate)
+                        {
 
-                dac.Booking.Add(booking);
-                dac.SaveChanges();
-                this.Close();
+                            CustomerUsername = c.Username,
+                            RoomId = room.RoomId,
+                            CheckInDate = checkInDate,
+                            CheckOutDate = checkOutdate
+                        };
+
+                        dac.Booking.Add(booking);
+                        dac.SaveChanges();
+                        this.Close();
+                    }catch(NullReferenceException ex)
+                    {
+                        Console.WriteLine(e);
+                        MessageBox.Show("user not found");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No room found");
+                }
 
             }
             catch (FormatException ex)
@@ -78,6 +103,38 @@ namespace DesktopApp
         {
             this.Close();
 
+        }
+
+        private bool checkDate(DateTime inDate, DateTime outDate, int roomNumber)
+        {
+            bool isAvaliable = false;
+
+            if (inDate.CompareTo(outDate) < 0) //Check if check-in date is before check-out date
+            {
+                List<Booking> bookings = dac.Booking.Where(bo => bo.RoomId == roomNumber).ToList<Booking>();
+                if (bookings.Count > 0) {
+                    foreach (Booking b in bookings)
+                    {
+
+                        if(inDate.CompareTo(b.CheckOutDate) >= 0 || outDate.CompareTo(b.CheckInDate) <= 0) //Check if date crashes with other bookings
+                        {
+                            isAvaliable = true;
+                            
+                        }
+                        else
+                        {
+                            isAvaliable = false;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    isAvaliable = true;
+                }
+            }
+
+            return isAvaliable;
         }
     }
 }

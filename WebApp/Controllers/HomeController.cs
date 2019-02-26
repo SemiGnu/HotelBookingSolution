@@ -16,9 +16,9 @@ namespace WebApp.Controllers
             return View("Index");
         }
 
-        public ActionResult Register()
+        public ActionResult LogInForwardActionResult()
         {
-            return View("~/Views/Customers/Register.cshtml");
+            return Redirect("~/Bookings1/Index");
         }
 
         // GET
@@ -26,7 +26,7 @@ namespace WebApp.Controllers
         {
             return View("~/Views/Login/Login.cshtml");
         }
-
+    
         // POST
         public ActionResult LoginPost(Customer objUser)
         {
@@ -34,11 +34,11 @@ namespace WebApp.Controllers
             {
                 using (dat154_19_2Entities db = new dat154_19_2Entities())
                 {
-                    var obj = db.Customer.Where(a => a.Username.Equals(objUser.Username) && a.Password.Equals(objUser.Password)).FirstOrDefault();
+                    var obj = db.Customer.FirstOrDefault(a => a.Username.Equals(objUser.Username) && a.Password.Equals(objUser.Password));
                     if (obj != null)
                     {
                         Session["Username"] = obj.Username.ToString();
-                        return RedirectToAction("Index");
+                        return RedirectToAction("LogInForwardActionResult");
                     }
                 }
             }
@@ -48,36 +48,7 @@ namespace WebApp.Controllers
 
 
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Login(Customer objUser)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        using (dat154_19_2Entities db = new dat154_19_2Entities())
-        //        {
-        //            var obj = db.Customer.Where(a => a.Username.Equals(objUser.Username) && a.Password.Equals(objUser.Password)).FirstOrDefault();
-        //            if (obj != null)
-        //            {
-        //                Session["UserName"] = obj.Username.ToString();
-        //                return RedirectToAction("UserDashBoard");
-        //            }
-        //        }
-        //    }
-        //    return View(objUser);
-        //}
-
-        //public ActionResult UserDashBoard()
-        //{
-        //    if (Session["UserID"] != null)
-        //    {
-        //        return View();
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("Login");
-        //    }
-        //}
+        
 
     }
 }
