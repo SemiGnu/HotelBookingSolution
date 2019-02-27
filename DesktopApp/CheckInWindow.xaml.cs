@@ -48,12 +48,12 @@ namespace DesktopApp
                 userFullName = CustomerNameTextBox.Text;
                 checkInDate = DateTime.Parse(CheckInDateBox.Text);
                 checkOutdate = DateTime.Parse(CheckOutDateBox.Text);
-                Customer c = dac.Customer.Where(cu => cu.Name == userFullName).FirstOrDefault<Customer>();
+                var c = dac.Customer.FirstOrDefault(cu => cu.Name == userFullName);
 
                 List<Room> avaliableRooms = dac.Room.Where(ro => ro.NumberOfBeds >= numberOfBeds).ToList<Room>();
                 Room room = null;
 
-                foreach(Room r in avaliableRooms)
+                foreach(var r in avaliableRooms)
                 {
                     if(checkDate(checkInDate, checkOutdate, r.RoomId))
                     {
@@ -113,7 +113,7 @@ namespace DesktopApp
             {
                 List<Booking> bookings = dac.Booking.Where(bo => bo.RoomId == roomNumber).ToList<Booking>();
                 if (bookings.Count > 0) {
-                    foreach (Booking b in bookings)
+                    foreach (var b in bookings)
                     {
 
                         if(inDate.CompareTo(b.CheckOutDate) >= 0 || outDate.CompareTo(b.CheckInDate) <= 0) //Check if date crashes with other bookings

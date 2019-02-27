@@ -50,7 +50,7 @@ namespace DesktopApp
 
             RoomNumberTextBox.Text = bookingElement.RoomId.ToString();
 
-            CustomerNameTextBox.Text = dac.Customer.Where(cu => cu.Username == bookingElement.CustomerUsername).FirstOrDefault<Customer>().Name;
+            CustomerNameTextBox.Text = dac.Customer.FirstOrDefault(cu => cu.Username == bookingElement.CustomerUsername)?.Name;
 
 
         }
@@ -65,8 +65,8 @@ namespace DesktopApp
             {
                 userFullName = CustomerNameTextBox.Text;
                 roomNr = int.Parse(RoomNumberTextBox.Text);
-                Customer c = dac.Customer.FirstOrDefault(cu => cu.Name == userFullName);
-                Booking b = dac.Booking.FirstOrDefault(bo => bo.Customer.Username == c.Username && bo.RoomId == roomNr);
+                var c = dac.Customer.FirstOrDefault(cu => cu.Name == userFullName);
+                var b = dac.Booking.FirstOrDefault(bo => bo.Customer.Username == c.Username && bo.RoomId == roomNr);
 
                 dac.Booking.Remove(b);
                 dac.SaveChanges();
@@ -90,10 +90,10 @@ namespace DesktopApp
 
         private void SelectCustomer_DoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Booking selectedBooking = (Booking) ReservationListView.SelectedItem;
+            var selectedBooking = (Booking) ReservationListView.SelectedItem;
             RoomNumberTextBox.Text = selectedBooking.RoomId.ToString();
 
-            CustomerNameTextBox.Text = dac.Customer.FirstOrDefault(cu => cu.Username == selectedBooking.CustomerUsername).Name;
+            CustomerNameTextBox.Text = dac.Customer.FirstOrDefault(cu => cu.Username == selectedBooking.CustomerUsername)?.Name;
 
 
         }
