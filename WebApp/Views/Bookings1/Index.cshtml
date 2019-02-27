@@ -7,8 +7,8 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
-    @Html.ActionLink("Create New From Request", "CreateFromRequest")
+    @*@Html.ActionLink("Create New", "Create")*@
+    @Html.ActionLink("Book a Room", "CreateFromRequest")
 </p>
 <table class="table">
     <tr>
@@ -42,8 +42,8 @@
             @Html.DisplayFor(modelItem => item.Room.RoomId)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.BookingId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.BookingId }) |
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.BookingId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.BookingId }) |*@
             @Html.ActionLink("Delete", "Delete", new { id=item.BookingId })
         </td>
     </tr>

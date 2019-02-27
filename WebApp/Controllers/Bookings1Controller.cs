@@ -19,7 +19,15 @@ namespace WebApp.Controllers
         // GET: Bookings1
         public async Task<ActionResult> Index()
         {
-            var booking = db.Booking.Include(b => b.Customer).Include(b => b.Room);
+            string user = "";
+            if (Session["Username"] != null)
+            {
+                user = (string)Session["Username"];
+            } else
+            {
+                return Redirect("~/");
+            }
+            var booking = db.Booking.Include(b => b.Customer).Include(b => b.Room).Where(b => b.CustomerUsername.Equals(user));
             return View(await booking.ToListAsync());
         }
 
@@ -78,6 +86,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateFromReservation([Bind(Include = "Username,NumberOfBeds,CheckInDate,CheckOutDate")] ReservationRequest reservation)
         {
+            reservation.Username = (string) Session["Username"];
             Booking booking = RequestHandler.HandleRequest(reservation);
 
             if (ModelState.IsValid)
