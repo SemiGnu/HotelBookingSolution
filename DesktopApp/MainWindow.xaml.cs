@@ -75,7 +75,7 @@ namespace HotelBooking
             Int32.TryParse(ServiceTaskEntryRoomNumber.Text, out roomInput);
             try
             {
-                int roomId = (
+                var roomId = (
                         from r in room
                         where r.RoomNumber == roomInput
                         select r
@@ -112,16 +112,16 @@ namespace HotelBooking
         // se OrderRoomServiceButton_Click -t 
         private void OrderMaintainanceButton_Click(object sender, RoutedEventArgs e)
         {
-            int roomInput = 0;
+            var roomInput = 0;
             Int32.TryParse(ServiceTaskEntryRoomNumber.Text, out roomInput);
             try
             {
-                int roomId = (
+                var roomId = (
                         from r in room
                         where r.RoomNumber == roomInput
                         select r
                         ).First<Room>().RoomId;
-                ServiceTask t = new ServiceTask
+                var t = new ServiceTask
                 {
                     RoomId = roomId,
                     TimeIssued = DateTime.Now,
