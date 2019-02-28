@@ -18,7 +18,7 @@ namespace WebApp.Controllers
         // GET: Customers1
         public async Task<ActionResult> Index()
         {
-            return View(await db.Customer.ToListAsync());
+            return View();
         }
 
         // GET: Customers1/Details/5
